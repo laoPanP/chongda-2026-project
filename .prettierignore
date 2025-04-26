@@ -1,0 +1,16 @@
+node_modules/
+dist/
+*.min.js
+*.d.ts
+public/
+.vscode/
+.idea/
+*.md
+*.log
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+.DS_Store
