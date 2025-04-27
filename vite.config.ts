@@ -5,10 +5,5 @@ import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(), 
-    vueJsx(),
-    VueSetupExtend()
-  ],
+  plugins: [vue(), vueJsx(), VueSetupExtend()]
 })
-
