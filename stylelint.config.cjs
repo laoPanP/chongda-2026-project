@@ -9,7 +9,6 @@ module.exports = {
     'stylelint-config-recommended-vue/scss', // 配置vue中scss样式格式化
     'stylelint-config-recommended-scss', // 配置vue中scss样式格式化
     'stylelint-config-recess-order' // 配置styleint css属性书写顺序插件
-    // 'stylelint-config-prettier' // 处理与prettier冲突，stylelint大于等于v15是已经不需要此插件
   ],
   // 不同格式的文件指定自定义语法
   overrides: [
