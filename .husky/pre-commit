@@ -1,4 +1,12 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# 1. 执行代码格式化
 pnpm run format
+
+# 2. 检测是否有未暂存的格式化变更，并自动添加
+FORMAT_CHANGES=$(git diff --name-only)
+if [ -n "$FORMAT_CHANGES" ]; then
+  echo "✨ 检测到格式化变更，正在重新暂存文件..."
+  git add $FORMAT_CHANGES
+fi

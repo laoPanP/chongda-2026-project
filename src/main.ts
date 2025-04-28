@@ -15,5 +15,7 @@ import 'virtual:svg-icons-register'
 // 引入自定义插件对象：注册整个项目的全局组件
 import GlobalComponents from '@/components'
 app.use(GlobalComponents)
+// 引入模板全局样式
+import '@/styles/index.scss'
 //将应用挂载到挂载点上
 app.mount('#app')

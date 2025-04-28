@@ -24,5 +24,13 @@ export default defineConfig({
       // '@': path.resolve('./src')//基于 当前工作目录（process.cwd()）解析路径，动态依赖运行时环境。
       '@': fileURLToPath(new URL('./src', import.meta.url)) // 现代项目更推荐 ESM如果项目使用 ESM 模块（"type": "module")，该方法最优 完全兼容 ESM 和 CJS，路径解析与运行时环境无关
     }
+  },
+  // scss全局变量配置
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/styles/variable.scss" as *;`
+      }
+    }
   }
 })

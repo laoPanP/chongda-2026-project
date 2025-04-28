@@ -67,12 +67,6 @@
 <style lang="scss">
   @use 'sass:color';
 
-  // Variables
-  $primary-color: #2c3e50;
-  $secondary-color: #42b983;
-  $danger-color: #ff4757;
-  $border-radius: 4px;
-
   .todo-container {
     padding: 1.5rem;
     margin: 2rem auto;
