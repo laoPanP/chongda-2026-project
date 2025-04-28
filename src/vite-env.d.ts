@@ -5,3 +5,9 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+// 通用路径别名类型（覆盖所有 @/ 子路径）
+declare module '@/*' {
+  // 自动推断导出类型（根据实际文件内容）
+  const value: any
+  export default value
+}

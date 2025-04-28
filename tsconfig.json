@@ -1,8 +1,9 @@
+// 配置 TypeScript 的类型检查、模块解析、输出目录等，仅影响 TS 编译阶段。
 {
   "compilerOptions": {
-    "baseUrl": "./",  // 基准路径（可选但推荐）
+    "baseUrl": "./", // 基准路径（可选但推荐）
     "paths": {
-      "@/*": ["src/*"]  // 与 Vite 的别名匹配
+      "@/*": ["src/*"] // 与 Vite 的别名匹配
     }
   },
   "files": [],

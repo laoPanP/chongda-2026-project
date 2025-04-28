@@ -1,6 +1,8 @@
 <template>
   <!-- 保持原有模板结构不变 -->
   <div class="todo-container">
+    <h2>测试svg图标</h2>
+    <svg-icon name="svg1" color="blue" width="40px" height="40px"></svg-icon>
     <el-button type="primary" size="default" @click="addTodo" :icon="Plus">这个是按钮</el-button>
     <h1 class="title">Todo List</h1>
     <div class="input-group">
@@ -18,14 +20,12 @@
     </ul>
 
     <p class="counter">Total tasks: {{ todos.length }}</p>
-    <helloWord></helloWord>
   </div>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue'
   import { Plus } from '@element-plus/icons-vue'
-  import helloWord from '@/components/HelloWorld.vue'
   // 定义类型
   interface TodoItem {
     id: number
