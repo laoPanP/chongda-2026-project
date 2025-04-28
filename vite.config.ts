@@ -6,6 +6,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { fileURLToPath, URL } from 'node:url'
+import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,6 +17,13 @@ export default defineConfig({
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')], //矢量图转换vue
       symbolId: 'icon-[dir]-[name]'
+    }),
+    viteMockServe({
+      // 新配置项：是否启用 mock localEnabled 和 prodEnabled 等旧配置项已被废弃
+      enable: process.env.NODE_ENV === 'development', // 仅在开发环境启用
+      // 其他配置
+      mockPath: './mock', // Mock 文件存放目录
+      logger: true // 是否显示请求日志
     })
   ],
   resolve: {
