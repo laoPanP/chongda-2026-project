@@ -1,6 +1,7 @@
 <template>
   <!-- 保持原有模板结构不变 -->
   <div class="todo-container">
+    <el-button type="primary" size="default" @click="addTodo" :icon="Plus">这个是按钮</el-button>
     <h1 class="title">Todo List</h1>
     <div class="input-group">
       <input v-model="newTodo" @keyup.enter="addTodo" placeholder="Add a new task" class="todo-input" />
@@ -22,7 +23,7 @@
 
 <script setup lang="ts">
   import { ref } from 'vue'
-
+  import { Plus } from '@element-plus/icons-vue'
   // 定义类型
   interface TodoItem {
     id: number
