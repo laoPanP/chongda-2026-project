@@ -1,4 +1,10 @@
 {
+  "compilerOptions": {
+    "baseUrl": "./",  // 基准路径（可选但推荐）
+    "paths": {
+      "@/*": ["src/*"]  // 与 Vite 的别名匹配
+    }
+  },
   "files": [],
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }

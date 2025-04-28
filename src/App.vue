@@ -18,12 +18,14 @@
     </ul>
 
     <p class="counter">Total tasks: {{ todos.length }}</p>
+    <helloWord></helloWord>
   </div>
 </template>
 
 <script setup lang="ts">
   import { ref } from 'vue'
   import { Plus } from '@element-plus/icons-vue'
+  import helloWord from '@/components/HelloWorld.vue'
   // 定义类型
   interface TodoItem {
     id: number

@@ -8,7 +8,8 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 // 获取应用实例对象
 const app = createApp(App)
 app.use(ElementPlus, {
-  locale: zhCn,
+  locale: zhCn
 })
+console.log(import.meta.env)
 //将应用挂载到挂载点上
 app.mount('#app')
