@@ -24,8 +24,17 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { Plus } from '@element-plus/icons-vue'
+  import { reqLogin } from '@/api/user'
+  onMounted(() => {
+    reqLogin({
+      username: 'admin',
+      password: '123456'
+    }).then((res: any) => {
+      console.log(res)
+    })
+  })
   // 定义类型
   interface TodoItem {
     id: number
