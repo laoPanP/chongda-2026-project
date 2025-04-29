@@ -1,6 +1,7 @@
 <template>
   <div>
-    <router-view />
+    这是home
+    <el-button type="primary">登录</el-button>
   </div>
 </template>
 
