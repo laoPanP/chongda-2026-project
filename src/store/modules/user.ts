@@ -6,13 +6,16 @@ import type { loginForm, loginResponseData, userInfoResponseData } from '@/api/u
 import type { UserState } from './types/type'
 //引入操作本地存储的工具方法
 import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+//引入路由
+import { constantRoute } from '@/router/route.ts'
 // 创建用户仓库
 let useUserStore = defineStore('User', {
   //存储数据
   state: (): UserState => {
     return {
       token: GET_TOKEN(),
-      userInfo: localStorage.getItem('userInfo') || {}
+      userInfo: localStorage.getItem('userInfo') || {},
+      menuRoutes: constantRoute //存储菜单数据
     }
   },
   //异步|逻辑

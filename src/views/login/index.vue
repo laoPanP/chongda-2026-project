@@ -21,7 +21,10 @@
   </div>
 </template>
 
-<script setup lang="ts" name="login">
+<script setup lang="ts">
+  defineOptions({
+    name: 'login'
+  })
   import { User, Lock } from '@element-plus/icons-vue'
   import { reactive, ref } from 'vue'
   import useUserStore from '@/store/modules/user'
@@ -45,7 +48,7 @@
       try {
         await userStore.userLogin(loginForm)
         // 登录成功，跳转首页
-        $router.push('/')
+        $router.push({ name: 'layout' })
         ElNotification({
           title: `Hi,${getTime()}`,
           message: '欢迎您！',
