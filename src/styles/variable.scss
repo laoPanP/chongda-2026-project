@@ -1,5 +1,13 @@
 //给项目提供scss全局变量
-$primary-color: red;
-$secondary-color: #42b983;
-$danger-color: #ff4757;
-$border-radius: 4px;
+// 主题颜色
+$primary-color: #409eff;
+// 页面背景颜色
+$base-page-color: #f5f5f5;
+// 顶部导航高度
+$base-header-height: 60px;
+// 页面区域顶部导航栏高度
+$base_pageTab-height: 40px;
+// 左侧菜单宽度
+$base-menu-width: 260px;
+// 左侧菜单背景颜色
+$base-menu-color: #fff;

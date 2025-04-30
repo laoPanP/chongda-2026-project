@@ -1,0 +1,49 @@
+/* ==================== */
+/* 优化版全局滚动条样式 */
+/* ==================== */
+
+/* 基础滚动条样式 - 宽度固定12px */
+::-webkit-scrollbar {
+  width: 8px !important; /* 加宽滚动条 */
+  height: 8px !important;
+}
+
+/* 滚动条轨道 - 更浅的背景 */
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+/* 滚动条滑块 - 灰色+圆角 */
+::-webkit-scrollbar-thumb {
+  background: #aaa; /* 基础灰色 */
+  border-radius: 6px;
+  transition: background 0.2s ease; /* 颜色过渡效果 */
+}
+
+/* 悬停时颜色变淡 */
+::-webkit-scrollbar-thumb:hover {
+  background: #999; /* 比原来稍深，但比你的#555更柔和 */
+}
+
+/* ==================== */
+/* Element Plus 专用样式 */
+/* ==================== */
+.el-scrollbar__wrap::-webkit-scrollbar {
+  width: 8px !important; /* 比全局稍窄 */
+}
+
+/* ==================== */
+/* 暗黑模式适配 */
+/* ==================== */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background: #333;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #666;
+  }
+}

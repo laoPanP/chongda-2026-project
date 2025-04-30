@@ -1,3 +1,4 @@
 // 引入清除默认样式
- @use './reset.scss' as *;
-
+@use './reset.scss' as *;
+// 引入全局公共样式
+@use './global.scss' as *;
