@@ -2,12 +2,29 @@
   <router-view v-slot="{ Component }">
     <transition name="fade">
       <!-- 二级页面渲染 -->
-      <component :is="Component" />
+      <component :is="Component" v-if="flag" />
     </transition>
   </router-view>
 </template>
 
-<script setup lang="ts" name="pageView"></script>
+<script setup lang="ts" name="pageView">
+  import { watch, ref, nextTick } from 'vue'
+  import useLayoutStore from '@/store/modules/setting'
+  // 获取layout相关配置仓库
+  let layoutStore = useLayoutStore()
+  let flag = ref(true)
+
+  // 监听refsh是否发生边变化
+  watch(
+    () => layoutStore.refsh,
+    () => {
+      flag.value = false
+      nextTick(() => {
+        flag.value = true
+      })
+    }
+  )
+</script>
 
 <style scoped>
   .fade-enter-from {

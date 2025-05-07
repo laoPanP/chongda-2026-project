@@ -24,8 +24,8 @@
       </div>
     </div>
     <div class="tabbar-right mr16">
-      <el-button icon="Refresh" circle />
-      <el-button icon="FullScreen" circle />
+      <el-button icon="Refresh" @click="refshPage" circle />
+      <el-button icon="FullScreen" @click="fullScreen" circle />
       <el-button icon="Setting" circle />
     </div>
   </div>
@@ -33,6 +33,7 @@
 
 <script setup lang="ts" name="pageTab">
   import useLayoutStore from '@/store/modules/setting'
+  import { useFullscreen } from '@/utils/fullscreen/fullScreen'
   import { useRoute } from 'vue-router'
   // 或者layout相关配置仓库
   let layoutStore = useLayoutStore()
@@ -41,6 +42,23 @@
   //是否展开
   const toggleSidebar = () => {
     layoutStore.changeCollapse()
+  }
+  //刷新二级页面
+  const refshPage = () => {
+    layoutStore.refsh = !layoutStore.refsh
+  }
+  const { toggle } = useFullscreen()
+  //全屏
+  const fullScreen = () => {
+    const pageContainer = document.documentElement as HTMLElement
+    toggle(pageContainer)
+    // if (!document.fullscreenElement) {
+    //   document.documentElement.requestFullscreen()
+    // } else {
+    //   if (document.exitFullscreen) {
+    //     document.exitFullscreen()
+    //   }
+    // }
   }
 </script>
 

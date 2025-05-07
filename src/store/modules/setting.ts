@@ -4,7 +4,8 @@ let useLayoutStore = defineStore('settingStore', {
   //存储数据
   state: () => {
     return {
-      collapse: false //菜单折叠控制
+      collapse: false, //菜单折叠控制
+      refsh: false //控制刷新效果
     }
   },
   actions: {
