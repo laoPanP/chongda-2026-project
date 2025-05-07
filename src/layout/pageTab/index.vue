@@ -3,15 +3,22 @@
     <div class="tabbar-left">
       <div class="tabbar-left-icon ml16" @click="toggleSidebar">
         <el-icon size="20">
-          <component :is="!layoutStore.collapse ? 'Expand' : 'Fold'"></component>
+          <component :is="layoutStore.collapse ? 'Expand' : 'Fold'"></component>
         </el-icon>
       </div>
       <!-- 左侧面包屑 -->
       <div class="ml8">
         <el-breadcrumb separator-icon="ArrowRight">
-          <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-          <el-breadcrumb-item>
-            <a href="/">promotion management</a>
+          <el-breadcrumb-item
+            v-for="(item, index) in $route.matched"
+            :key="item.path"
+            :to="item.path"
+            v-show="item.meta.title"
+          >
+            <el-icon style="margin: 0 2px">
+              <component :is="item.meta.icon"></component>
+            </el-icon>
+            {{ item.meta.title }}
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
@@ -26,8 +33,11 @@
 
 <script setup lang="ts" name="pageTab">
   import useLayoutStore from '@/store/modules/setting'
+  import { useRoute } from 'vue-router'
   // 或者layout相关配置仓库
   let layoutStore = useLayoutStore()
+  // 获取路由对象
+  let $route = useRoute()
   //是否展开
   const toggleSidebar = () => {
     layoutStore.changeCollapse()

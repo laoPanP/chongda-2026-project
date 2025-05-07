@@ -5,9 +5,9 @@ export const constantRoute = [
     component: () => import('@/layout/index.vue'),
     name: 'layout',
     meta: {
-      title: 'layout', //菜单标题
+      title: '', //菜单标题
       hidden: false, //是否隐藏
-      icon: 'House'
+      icon: ''
     },
     redirect: '/home',
     children: [
@@ -42,6 +42,7 @@ export const constantRoute = [
       hidden: false, //是否隐藏
       icon: 'Lock'
     },
+    redirect: '/authManage/userManage',
     children: [
       {
         path: '/authManage/userManage',
@@ -84,6 +85,7 @@ export const constantRoute = [
       hidden: false, //是否隐藏
       icon: 'Goods'
     },
+    redirect: '/commodityManage/brandManage',
     children: [
       {
         path: '/commodityManage/brandManage',
