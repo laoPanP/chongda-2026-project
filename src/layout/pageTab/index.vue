@@ -2,8 +2,9 @@
   <div class="tabbar">
     <div class="tabbar-left">
       <div class="tabbar-left-icon ml16" @click="toggleSidebar">
-        <el-icon v-if="!collapse" size="20"><Expand /></el-icon>
-        <el-icon v-else size="20"><Fold /></el-icon>
+        <el-icon size="20">
+          <component :is="!layoutStore.collapse ? 'Expand' : 'Fold'"></component>
+        </el-icon>
       </div>
       <!-- 左侧面包屑 -->
       <div class="ml8">
@@ -24,11 +25,12 @@
 </template>
 
 <script setup lang="ts" name="pageTab">
-  import { ref } from 'vue'
+  import useLayoutStore from '@/store/modules/setting'
+  // 或者layout相关配置仓库
+  let layoutStore = useLayoutStore()
   //是否展开
-  let collapse = ref(true)
   const toggleSidebar = () => {
-    collapse.value = !collapse.value
+    layoutStore.changeCollapse()
   }
 </script>
 

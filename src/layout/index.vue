@@ -19,9 +19,9 @@
     <!-- 主要内容展示区域 -->
     <div class="layout_content">
       <!-- 左侧菜单 -->
-      <div class="layout_slider">
+      <div class="layout_slider" :class="{ collapse_class: layoutStore.collapse ? true : false }">
         <el-scrollbar class="layout_slider_scrollbar">
-          <el-menu :default-active="$route.path">
+          <el-menu :collapse="layoutStore.collapse" :default-active="$route.path">
             <!-- 动态生成菜单 -->
             <Menu :menuList="userStore.menuRoutes"></Menu>
           </el-menu>
@@ -55,7 +55,10 @@
   import userInfoTab from './userInfoTab/index.vue'
   // 获取用户菜单数据
   import useUserStore from '@/store/modules/user'
+  import useLayoutStore from '@/store/modules/setting'
   let userStore = useUserStore()
+  // 或者layout相关配置仓库
+  let layoutStore = useLayoutStore()
   let $route = useRoute()
 </script>
 
@@ -99,6 +102,7 @@
         height: 100%;
         width: $base-menu-width;
         background-color: $base-menu-color;
+        transition: all 0.3s;
         .layout_slider_scrollbar {
           width: 100%;
           height: 100%;
@@ -107,7 +111,11 @@
           border-right: none !important;
           background-color: transparent;
         }
+        &.collapse_class {
+          width: $base-menu-minWidth;
+        }
       }
+
       .layout_main {
         flex: 1;
         .layout_page_tab {
