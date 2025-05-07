@@ -9,6 +9,15 @@
         </template>
       </el-menu-item>
     </template>
+    <!-- 有子路由且只有一个 -->
+    <template v-else-if="item.children && item.children.length === 1">
+      <el-menu-item v-if="!item.children[0].meta.hidden" :index="item.children[0].path" @click="goRoute">
+        <template #title>
+          <el-icon><component :is="item.children[0].meta.icon" /></el-icon>
+          <span>{{ item.children[0].meta.title }}</span>
+        </template>
+      </el-menu-item>
+    </template>
     <!-- 有子路由 -->
     <template v-else>
       <el-sub-menu v-if="!item.meta.hidden" :index="item.path">
@@ -26,9 +35,14 @@
   defineOptions({
     name: 'Menu'
   })
-  defineProps(['menuList'])
+  import { useRouter } from 'vue-router'
+  let $router = useRouter()
+  const props = defineProps<{
+    menuList: any[] // 使用 TypeScript 接口更规范
+  }>()
+
   const goRoute = (item: any) => {
-    console.log('item', item)
+    $router.push(item.index)
   }
 </script>
 

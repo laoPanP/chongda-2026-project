@@ -6,10 +6,14 @@
         <logoTitle></logoTitle>
       </div>
       <div class="layout_right">
+        <!-- 顶部一级菜单 -->
         <div class="layout_firstTitle">
           <first-menu></first-menu>
         </div>
-        <div class="layout_userInfo"></div>
+        <!-- 顶部用户信息 -->
+        <div class="layout_userInfo">
+          <userInfoTab></userInfoTab>
+        </div>
       </div>
     </div>
     <!-- 主要内容展示区域 -->
@@ -17,7 +21,7 @@
       <!-- 左侧菜单 -->
       <div class="layout_slider">
         <el-scrollbar class="layout_slider_scrollbar">
-          <el-menu>
+          <el-menu :default-active="$route.path">
             <!-- 动态生成菜单 -->
             <Menu :menuList="userStore.menuRoutes"></Menu>
           </el-menu>
@@ -26,11 +30,13 @@
       <!-- 内容展示区域 -->
       <div class="layout_main">
         <!-- 内容顶部导航栏 -->
-        <div class="layout_page_tab"></div>
+        <div class="layout_page_tab">
+          <pageTab></pageTab>
+        </div>
         <!-- 页面展示区域 -->
         <div class="layout_page_view">
           <div class="layout_page_view_content">
-            <div style="background-color: aqua; height: 1300px; width: 100%">这个是内容</div>
+            <pageView></pageView>
           </div>
         </div>
       </div>
@@ -39,12 +45,18 @@
 </template>
 
 <script setup lang="ts">
+  // 获取路由对象
+  import { useRoute } from 'vue-router'
   import logoTitle from './logoTitle/index.vue'
   import firstMenu from './firstMenu/index.vue'
   import Menu from './Menu/index.vue'
+  import pageView from './pageView/index.vue'
+  import pageTab from './pageTab/index.vue'
+  import userInfoTab from './userInfoTab/index.vue'
   // 获取用户菜单数据
   import useUserStore from '@/store/modules/user'
   let userStore = useUserStore()
+  let $route = useRoute()
 </script>
 
 <style scoped lang="scss">
@@ -59,6 +71,7 @@
       width: 100%;
       height: $base-header-height;
       background-color: $primary-color;
+      // background: linear-gradient(45deg, #409eff 0%, rgb(159.5, 206.5, 255) 100%); /* 水平渐变 */
       display: flex;
       .layout_left {
         width: $base-menu-width;
@@ -66,6 +79,7 @@
       .layout_right {
         flex: 1;
         display: flex;
+        justify-content: space-between;
         .layout_firstTitle {
           width: 80%;
           height: 100%;

@@ -19,7 +19,6 @@
     height: 100%;
     font-size: $base-logoTitle-fontSize;
     color: #fff;
-    background-color: $primary-color;
     .layout-logo-text {
       margin-left: 10px;
       //超过显示省略号
