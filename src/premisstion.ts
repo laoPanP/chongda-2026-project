@@ -2,6 +2,8 @@
 import router from '@/router'
 import nprogress from 'nprogress'
 import setting from './setting'
+//引入操作本地存储的工具方法
+import { REMOVE_TOKEN } from '@/utils/token'
 //引入进度条样式
 import 'nprogress/nprogress.css'
 // 获取用户仓库token
@@ -37,13 +39,22 @@ router.beforeEach(async (to: any, from: any, next: any) => {
           next()
         } catch (error) {
           //token过期 | 用户手动修改本地token
-          // 1.清除token
-          await userStore.logout()
-          // 2.跳转到登录页面
-          next({
-            path: '/login',
-            query: { redirect: to.path }
-          })
+          try {
+            // 1.清除token
+            await userStore.logout()
+          } catch (logoutError) {
+          } finally {
+            //防止登录失败接口也报错时，因为无法继续往后执行，造成一直重复调用接口，无法跳转页面
+            // 强制清除本地 token 和用户信息
+            userStore.token = ''
+            userStore.userInfo = {}
+            REMOVE_TOKEN()
+            localStorage.removeItem('userInfo')
+            next({
+              path: '/login',
+              query: { redirect: to.path }
+            })
+          }
         }
       }
     }

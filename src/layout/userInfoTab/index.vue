@@ -20,18 +20,26 @@
 <script setup lang="ts" name="userInfoTab">
   import useUserStore from '@/store/modules/user'
   import { useRouter, useRoute } from 'vue-router'
+  import { ElNotification } from 'element-plus'
   let userStore = useUserStore()
   let $router = useRouter()
   let $route = useRoute()
-  const logout = () => {
+  const logout = async () => {
     //向服务器发送请求，清除服务器端的token
     //清除仓库中用户相关数据
     // 跳转登录页面
-    userStore.logout()
-    if ($route.name == 'home') {
-      $router.push({ name: 'login' })
-    } else {
-      $router.push({ name: 'login', query: { redirect: $route.path } })
+    try {
+      await userStore.logout()
+      if ($route.name == 'home') {
+        $router.push({ name: 'login' })
+      } else {
+        $router.push({ name: 'login', query: { redirect: $route.path } })
+      }
+    } catch (error) {
+      ElNotification({
+        message: (error as Error).message,
+        type: 'error'
+      })
     }
   }
 </script>

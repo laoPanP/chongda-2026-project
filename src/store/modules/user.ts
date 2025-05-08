@@ -1,6 +1,6 @@
 // 创建用户相关的仓库
 import { defineStore } from 'pinia'
-import { reqLogin, reqUserInfo } from '@/api/user'
+import { reqLogin, reqUserInfo, reqLogout } from '@/api/user'
 // 引入数据类型
 import type { loginForm, loginResponseData, userInfoResponseData } from '@/api/user/type'
 import type { UserState } from './types/type'
@@ -14,7 +14,7 @@ let useUserStore = defineStore('User', {
   state: (): UserState => {
     return {
       token: GET_TOKEN(),
-      userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo') as string) : {},
+      userInfo: {}, //用户信息存储在缓存，但是不进行持久化操作
       menuRoutes: constantRoute //存储菜单数据
     }
   },
@@ -24,30 +24,35 @@ let useUserStore = defineStore('User', {
     async userLogin(data: loginForm) {
       let result: loginResponseData = await reqLogin(data)
       if (result.code == 200) {
-        console.log(result.data)
-        this.setToken(result.data.token)
+        this.setToken(result.data)
         return 'ok'
       } else {
-        return Promise.reject(new Error(result.data.message))
+        return Promise.reject(new Error(result.message))
       }
     },
     //获取用户信息
     async getUserInfo() {
       let result = await reqUserInfo()
       if (result.code == 200) {
-        this.setUserInfo(result.data.checkUser)
+        this.setUserInfo(result.data)
         return 'ok'
       } else {
-        return Promise.reject('请求用户信息失败')
+        return Promise.reject(new Error(result.message))
       }
     },
     //退出登录
-    logout() {
-      // 目前没有接口清除服务器端的token
-      this.token = ''
-      this.userInfo = {}
-      localStorage.removeItem('userInfo')
-      REMOVE_TOKEN()
+    async logout() {
+      // 调用接口清除服务器端的token
+      let result = await reqLogout()
+      if (result.code == 200) {
+        this.token = ''
+        this.userInfo = {}
+        localStorage.removeItem('userInfo')
+        REMOVE_TOKEN()
+        return 'ok'
+      } else {
+        return Promise.reject(new Error(result.message))
+      }
     },
     setToken(token: string) {
       this.token = token

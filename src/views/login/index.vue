@@ -7,10 +7,16 @@
           <h1>欢迎您！</h1>
           <h2>欢迎来到Vue3测试模板项目</h2>
           <el-form-item prop="username">
-            <el-input :prefix-icon="User" v-model="loginForm.username"></el-input>
+            <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="loginForm.username"></el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input :prefix-icon="Lock" type="password" show-password v-model="loginForm.password"></el-input>
+            <el-input
+              :prefix-icon="Lock"
+              placeholder="请输入密码"
+              type="password"
+              show-password
+              v-model="loginForm.password"
+            ></el-input>
           </el-form-item>
           <el-form-item>
             <el-button :loading="loading" class="login-btn" type="primary" @click="login">登录</el-button>

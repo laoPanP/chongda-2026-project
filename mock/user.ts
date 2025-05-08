@@ -38,14 +38,13 @@ export default [
       if (!checkUser) {
         return {
           code: 201,
-          data: {
-            message: '账号或者密码不正确'
-          }
+          message: '账号或者密码不正确',
+          data: ''
         }
       }
       //如果有返回成功信息
       const { token } = checkUser
-      return { code: 200, data: { token } }
+      return { code: 200, data: token }
     }
   },
   //获取用户信息
@@ -59,11 +58,27 @@ export default [
       const checkUser = createUserList().find((item) => item.token === token)
       //没有返回失败的信息
       if (!checkUser) {
-        return { code: 201, data: { message: '获取用户信息失败' } }
+        return { code: 201, data: '失败', message: '获取用户信息失败' }
       }
-
       //如果有返回成功信息
-      return { code: 200, data: { checkUser } }
+      return { code: 200, data: checkUser }
+    }
+  },
+  //退出登录
+  {
+    url: '/api/user/logout',
+    method: 'post',
+    response: (request) => {
+      // 测试没有token退出登录接口报错
+      //获取请求头携带token
+      const token = request.headers.token
+      //查看用户信息是否包含有次token用户
+      const checkUser = createUserList().find((item) => item.token === token)
+      if (!checkUser) {
+        return { code: 201, data: '失败', message: '退出登录失败' }
+      }
+      //如果有返回成功信息
+      return { code: 200, data: '' }
     }
   }
 ]
