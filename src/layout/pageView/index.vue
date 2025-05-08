@@ -1,10 +1,12 @@
 <template>
-  <router-view v-slot="{ Component }">
-    <transition name="fade">
-      <!-- 二级页面渲染 -->
-      <component :is="Component" v-if="flag" />
-    </transition>
-  </router-view>
+  <div class="page_view">
+    <router-view v-slot="{ Component }">
+      <transition name="fade">
+        <!-- 二级页面渲染 -->
+        <component :is="Component" v-if="flag" />
+      </transition>
+    </router-view>
+  </div>
 </template>
 
 <script setup lang="ts" name="pageView">
@@ -26,7 +28,7 @@
   )
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .fade-enter-from {
     opacity: 0;
     transform: scale(0);
@@ -39,5 +41,9 @@
     opacity: 1;
     transform: scale(1);
     /* transform: rotate(360deg); */
+  }
+  .page_view {
+    background-color: $base-view-page-color;
+    border-radius: 6px;
   }
 </style>

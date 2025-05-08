@@ -1,23 +1,40 @@
 <template>
   <div class="userInfo_div mr16">
-    <img src="@/assets/images/login_bg.png" alt="" />
+    <img :src="userStore.userInfo.avatar" alt="" />
     <el-dropdown>
       <span class="el-dropdown-link ml8">
-        admin
+        {{ userStore.userInfo.username || '未登录' }}
         <el-icon class="el-icon--right">
           <arrow-down />
         </el-icon>
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
   </div>
 </template>
 
-<script setup lang="ts" name="userInfoTab"></script>
+<script setup lang="ts" name="userInfoTab">
+  import useUserStore from '@/store/modules/user'
+  import { useRouter, useRoute } from 'vue-router'
+  let userStore = useUserStore()
+  let $router = useRouter()
+  let $route = useRoute()
+  const logout = () => {
+    //向服务器发送请求，清除服务器端的token
+    //清除仓库中用户相关数据
+    // 跳转登录页面
+    userStore.logout()
+    if ($route.name == 'home') {
+      $router.push({ name: 'login' })
+    } else {
+      $router.push({ name: 'login', query: { redirect: $route.path } })
+    }
+  }
+</script>
 
 <style scoped>
   /* 移除触发器边框 */

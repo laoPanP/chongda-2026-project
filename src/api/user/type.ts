@@ -18,12 +18,12 @@ interface userInfo {
   userId: number
   avatar: string
   username: string
-  password: string
+  password: string | null
   desc: string
   roles: string[]
   buttons: string[]
   routes: string
-  token: string
+  token: string | null
 }
 interface user {
   checkUser: userInfo

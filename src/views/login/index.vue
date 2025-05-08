@@ -28,9 +28,10 @@
   import { User, Lock } from '@element-plus/icons-vue'
   import { reactive, ref } from 'vue'
   import useUserStore from '@/store/modules/user'
-  import { useRouter } from 'vue-router'
+  import { useRouter, useRoute } from 'vue-router'
   import { ElNotification } from 'element-plus'
   let $router = useRouter()
+  let $route = useRoute()
   let userStore = useUserStore()
   //收集账号与密码数据
   let loginForm = reactive({
@@ -47,8 +48,12 @@
       // 这里也可以使用.then
       try {
         await userStore.userLogin(loginForm)
-        // 登录成功，跳转首页
-        $router.push({ name: 'layout' })
+        if ($route.query.redirect) {
+          $router.push({ path: $route.query.redirect as string })
+        } else {
+          // 登录成功，跳转首页
+          $router.push({ name: 'layout' })
+        }
         ElNotification({
           title: `Hi,${getTime()}`,
           message: '欢迎您！',

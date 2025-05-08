@@ -31,5 +31,7 @@ app.use(router)
 app.use(pinia)
 // 引入模板全局样式
 import '@/styles/index.scss'
+// 引入路由鉴权文件
+import '@/premisstion.ts'
 //将应用挂载到挂载点上
 app.mount('#app')
