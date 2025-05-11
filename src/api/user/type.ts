@@ -3,32 +3,33 @@ export interface loginForm {
   username: string
   password: string
 }
-interface dataType {
-  token?: string
-  message?: string
-}
 //登录接口返回的数据类型
 export interface loginResponseData {
   code: number
-  data: dataType
+  data: string
+  message: string
 }
 
-// 等一服务器返回用户信息的相关数据类型
+// 服务器返回用户信息的相关数据类型
 interface userInfo {
   userId: number
   avatar: string
   username: string
-  password: string | null
+  password?: string
   desc: string
   roles: string[]
   buttons: string[]
   routes: string
-  token: string | null
-}
-interface user {
-  checkUser: userInfo
+  token?: string
 }
 export interface userInfoResponseData {
   code: number
-  data: user
+  data: userInfo
+  message: string
+}
+//退出登录返回的想关数据类型
+export interface loginOutResponseData {
+  code: number
+  data: string
+  message: string
 }

@@ -1,11 +1,13 @@
 <template>
   <div class="page_view">
-    <router-view v-slot="{ Component }">
-      <transition name="fade">
-        <!-- 二级页面渲染 -->
-        <component :is="Component" v-if="flag" />
-      </transition>
-    </router-view>
+    <el-card>
+      <router-view v-slot="{ Component }">
+        <transition name="fade">
+          <!-- 二级页面渲染 -->
+          <component :is="Component" v-if="flag" />
+        </transition>
+      </router-view>
+    </el-card>
   </div>
 </template>
 

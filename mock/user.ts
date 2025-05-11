@@ -44,7 +44,7 @@ export default [
       }
       //如果有返回成功信息
       const { token } = checkUser
-      return { code: 200, data: token }
+      return { code: 200, data: token, message: '成功' }
     }
   },
   //获取用户信息
@@ -61,7 +61,7 @@ export default [
         return { code: 201, data: '失败', message: '获取用户信息失败' }
       }
       //如果有返回成功信息
-      return { code: 200, data: checkUser }
+      return { code: 200, data: checkUser, message: '成功' }
     }
   },
   //退出登录
@@ -78,7 +78,7 @@ export default [
         return { code: 201, data: '失败', message: '退出登录失败' }
       }
       //如果有返回成功信息
-      return { code: 200, data: '' }
+      return { code: 200, data: '', message: '成功' }
     }
   }
 ]

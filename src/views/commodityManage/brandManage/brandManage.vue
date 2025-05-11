@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>这个是品牌管理</h1>
+    <p v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</p>
   </div>
 </template>
 
