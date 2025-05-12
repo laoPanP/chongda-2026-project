@@ -1,13 +1,11 @@
 <template>
   <div class="page_view">
-    <el-card>
-      <router-view v-slot="{ Component }">
-        <transition name="fade">
-          <!-- 二级页面渲染 -->
-          <component :is="Component" v-if="flag" />
-        </transition>
-      </router-view>
-    </el-card>
+    <router-view v-slot="{ Component }">
+      <transition name="fade">
+        <!-- 二级页面渲染 -->
+        <component :is="Component" v-if="flag" />
+      </transition>
+    </router-view>
   </div>
 </template>
 
@@ -45,7 +43,7 @@
     /* transform: rotate(360deg); */
   }
   .page_view {
-    background-color: $base-view-page-color;
+    // background-color: $base-view-page-color;
     border-radius: 6px;
   }
 </style>

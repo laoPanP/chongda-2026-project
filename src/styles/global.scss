@@ -93,6 +93,9 @@
 .mt8 {
   margin-top: 8px;
 }
+.mt10 {
+  margin-top: 10px;
+}
 .mt12 {
   margin-top: 12px;
 }
@@ -112,6 +115,9 @@
 .mb8 {
   margin-bottom: 8px;
 }
+.mb10 {
+  margin-bottom: 10px;
+}
 .mb12 {
   margin-bottom: 12px;
 }
@@ -123,4 +129,68 @@
 }
 .mb24 {
   margin-bottom: 24px;
+}
+//表单样式
+.base-card-form {
+  .el-card:first-child {
+    margin-bottom: 16px;
+    // 方案一
+    .el-form {
+      .el-form-item {
+        box-sizing: border-box;
+        margin-right: 0;
+        padding-right: 32px;
+        width: 25%;
+      }
+      .el-form-item:nth-child(4n) {
+        padding-right: 0px !important;
+      }
+      // 余数为1，操作列宽度占100%
+      .el-form-item:nth-child(4n + 1):nth-last-child(1).form-actions {
+        padding-right: 0px !important;
+        width: 100%;
+      }
+      // 余数为2，操作列宽度占75%
+      .el-form-item:nth-child(4n + 2):nth-last-child(1).form-actions {
+        padding-right: 0px !important;
+        width: 75%;
+      }
+      // 余数为3，操作列宽度占5%
+      .el-form-item:nth-child(4n + 3):nth-last-child(1).form-actions {
+        padding-right: 0px !important;
+        width: 50%;
+      }
+      .form-actions {
+        .el-form-item__content {
+          justify-content: flex-end;
+        }
+      }
+    }
+    // 方案二
+    // .el-form {
+    //   display: flex;
+    //   flex-wrap: wrap;
+    //   gap: 16px; // 替代margin/padding间距
+
+    //   .el-form-item {
+    //     box-sizing: border-box;
+    //     margin-right: 0;
+    //     margin-bottom: 0;
+    //     flex: 1 0 calc(25% - 12px); // 基础宽度25%，考虑gap间距
+    //     min-width: calc(25% - 12px);
+    //     max-width: calc(25% - 12px);
+
+    //     &.form-actions {
+    //       flex: 1; // 关键：自动填充剩余空间
+    //       margin-left: auto; // 关键：右对齐
+    //       min-width: auto; // 取消最小宽度限制
+    //       max-width: none; // 取消最大宽度限制
+
+    //       .el-form-item__content {
+    //         justify-content: flex-end;
+    //       }
+    //     }
+    //   }
+    // }
+  }
 }

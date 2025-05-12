@@ -1,72 +1,74 @@
 <template>
   <div>
-    <el-button type="primary" icon="Plus" @click="addBrand">添加品牌</el-button>
-    <div class="mt16">
-      <el-table :data="tableData" border stripe style="width: 100%">
-        <template v-for="(item, index) in columns" :key="item.key || item.type">
-          <el-table-column
-            :type="item.type"
-            :width="item.width"
-            :label="item.label"
-            :min-width="item.minWidth"
-            :align="item.align"
-            :prop="item.key"
-          >
-            <template #default="{ row }" v-if="item.key === 'brandLogo'">
-              <el-image :src="row.brandLogo" style="width: 60px; height: 60px" />
-            </template>
-            <template #default="{ row }" v-else-if="item.key === 'action'">
-              <el-button type="primary" icon="Edit" @click.stop="changeData(row)">修改</el-button>
-              <el-button type="danger" icon="Delete" @click.stop="deleteData(row)">删除</el-button>
-            </template>
-          </el-table-column>
+    <el-card>
+      <el-button type="primary" icon="Plus" @click="addBrand">添加品牌</el-button>
+      <div class="mt16">
+        <el-table :data="tableData" border stripe style="width: 100%">
+          <template v-for="(item, index) in columns" :key="item.key || item.type">
+            <el-table-column
+              :type="item.type"
+              :width="item.width"
+              :label="item.label"
+              :min-width="item.minWidth"
+              :align="item.align"
+              :prop="item.key"
+            >
+              <template #default="{ row }" v-if="item.key === 'brandLogo'">
+                <el-image :src="row.brandLogo" style="width: 60px; height: 60px" />
+              </template>
+              <template #default="{ row }" v-else-if="item.key === 'action'">
+                <el-button type="primary" icon="Edit" @click.stop="changeData(row)">修改</el-button>
+                <el-button type="danger" icon="Delete" @click.stop="deleteData(row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </template>
+        </el-table>
+      </div>
+      <div class="mt16">
+        <!-- layout:调整分页器子组件位置 -->
+        <el-pagination
+          v-model:current-page="queryData.pageNo"
+          v-model:page-size="queryData.pageSize"
+          :page-sizes="pageData.pageSizes"
+          :size="pageData.size"
+          :disabled="pageData.disabled"
+          :background="pageData.background"
+          layout="prev, pager, next, jumper,->, sizes, total,  "
+          :total="pageData.total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
+      <!-- 品牌编辑弹框 -->
+      <el-dialog
+        v-if="dialogVisible"
+        v-model="dialogVisible"
+        :title="formData.id ? '编辑品牌' : '添加品牌'"
+        width="600px"
+      >
+        <el-form ref="brandForm" :model="formData" :rules="rules" label-width="80px" label-position="right">
+          <el-form-item label="品牌名称" prop="brandName">
+            <el-input v-model="formData.brandName" placeholder="请输入品牌名称" clearable />
+          </el-form-item>
+
+          <el-form-item label="品牌描述" prop="description">
+            <el-input
+              v-model="formData.description"
+              type="textarea"
+              :rows="4"
+              placeholder="请输入品牌描述"
+              show-word-limit
+              maxlength="200"
+            />
+          </el-form-item>
+        </el-form>
+
+        <template #footer>
+          <el-button :loading="loading" @click="dialogVisible = false">取消</el-button>
+          <el-button :loading="loading" type="primary" @click="handleSubmit">确定</el-button>
         </template>
-      </el-table>
-    </div>
-    <div class="mt16">
-      <!-- layout:调整分页器子组件位置 -->
-      <el-pagination
-        v-model:current-page="queryData.pageNo"
-        v-model:page-size="queryData.pageSize"
-        :page-sizes="pageData.pageSizes"
-        :size="pageData.size"
-        :disabled="pageData.disabled"
-        :background="pageData.background"
-        layout="prev, pager, next, jumper,->, sizes, total,  "
-        :total="pageData.total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
-    <!-- 品牌编辑弹框 -->
-    <el-dialog
-      v-if="dialogVisible"
-      v-model="dialogVisible"
-      :title="formData.id ? '编辑品牌' : '添加品牌'"
-      width="600px"
-    >
-      <el-form ref="brandForm" :model="formData" :rules="rules" label-width="80px" label-position="right">
-        <el-form-item label="品牌名称" prop="brandName">
-          <el-input v-model="formData.brandName" placeholder="请输入品牌名称" clearable />
-        </el-form-item>
-
-        <el-form-item label="品牌描述" prop="description">
-          <el-input
-            v-model="formData.description"
-            type="textarea"
-            :rows="4"
-            placeholder="请输入品牌描述"
-            show-word-limit
-            maxlength="200"
-          />
-        </el-form-item>
-      </el-form>
-
-      <template #footer>
-        <el-button :loading="loading" @click="dialogVisible = false">取消</el-button>
-        <el-button :loading="loading" type="primary" @click="handleSubmit">确定</el-button>
-      </template>
-    </el-dialog>
+      </el-dialog>
+    </el-card>
   </div>
 </template>
 
