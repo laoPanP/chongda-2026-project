@@ -67,10 +67,6 @@
         })
         loading.value = false
       } catch (error) {
-        ElNotification({
-          message: (error as Error).message,
-          type: 'error'
-        })
         loading.value = false
       }
     })

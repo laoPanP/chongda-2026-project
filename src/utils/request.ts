@@ -1,6 +1,6 @@
 // 对axios二次封装：使用请求拦截器和响应拦截器
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
+import { ElNotification } from 'element-plus'
 //获取token
 import useUserStore from '@/store/modules/user'
 //第一步：利用axios对象的create方法创建一个axios实例，配置基础路径、超时时间
@@ -27,9 +27,17 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (res) => {
     //简化数据
+    if (res.data.code !== 200) {
+      ElNotification({
+        message: res.data.message || '操作失败',
+        type: 'warning'
+      })
+      return Promise.reject(res.data) // 继续传递错误
+    }
     return res.data
   },
   (err) => {
+    console.log(err)
     //失败回调：处理http网络错误
     //定义一个变量：存储网络错误信息
     let message = ''
@@ -48,11 +56,14 @@ request.interceptors.response.use(
       case 500:
         message = '服务器错误'
         break
+      case 201:
+        message = err.response.message
+        break
       default:
         message = '网络错误'
     }
     // 提示错误信息
-    ElMessage({
+    ElNotification({
       type: 'error',
       message
     })

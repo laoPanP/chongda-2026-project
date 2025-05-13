@@ -423,7 +423,6 @@
   })
   let loading = ref(false)
   const handleSubmit = async () => {
-    console.log('王五', valueData.value)
     Object.assign(formData.attributeValueList, valueData.value)
     brandForm.value.validate(async (valid: boolean) => {
       if (!valid) return
