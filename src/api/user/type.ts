@@ -4,7 +4,7 @@ export interface loginForm {
   password: string
 }
 //登录接口返回的数据类型
-export interface loginResponseData {
+export interface LoginResponseData {
   code: number
   data: string
   message: string
@@ -25,18 +25,18 @@ export interface userInfo {
   createTime?: string
   updateTime?: string
 }
-export interface userInfoResponseData {
+export interface UserInfoResponseData {
   code: number
   data: userInfo
   message: string
 }
 //退出登录返回的想关数据类型
-export interface loginOutResponseData {
+export interface LoginOutResponseData {
   code: number
   data: string
   message: string
 }
-//列表入参查询类型
+//用户列表入参查询类型
 export interface queryData {
   pageNo: number
   pageSize: number
@@ -55,4 +55,21 @@ export interface UserAllocationParams {
   roleCodes: string[]
   roles: string[]
   username?: string
+}
+//角色列表入参查询类型
+export interface QueryRoleData {
+  pageNo: number
+  pageSize: number
+  roleName?: string
+  roleCode?: string
+  roleCodes?: string
+}
+// 角色数据基础类型
+export interface RoleDataTS {
+  roleId?: number
+  roleCode: string
+  roleName: string
+  description?: string
+  createTime?: string
+  updateTime?: string
 }

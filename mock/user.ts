@@ -7,7 +7,7 @@ function createUserList() {
       password: '123456',
       desc: '系统管理员',
       roles: ['系统管理员'],
-      roleCodes: ['systemManager'],
+      roleCodes: ['system_manager'],
       buttons: ['curser.detail'],
       routes: ['home'],
       token: 'admin-token',
@@ -21,7 +21,7 @@ function createUserList() {
       password: '123456',
       desc: '平台管理员',
       roles: ['平台管理员'],
-      roleCodes: ['planManager'],
+      roleCodes: ['plan_manager'],
       buttons: ['curser.detail', 'curser.user'],
       routes: ['home'],
       token: 'system-token',
@@ -30,6 +30,97 @@ function createUserList() {
     }
   ]
 }
+let roleList = [
+  {
+    roleId: 1,
+    roleCode: 'system_manager',
+    roleName: '系统管理员',
+    description: '拥有系统所有权限',
+    createTime: '2025-01-01 00:00:00',
+    updateTime: '2025-01-01 00:00:00'
+  },
+  {
+    roleId: 2,
+    roleCode: 'plan_manager',
+    roleName: '平台管理员',
+    description: '管理内容发布',
+    createTime: '2025-01-02 00:00:00',
+    updateTime: '2025-01-02 00:00:00'
+  },
+  {
+    roleId: 3,
+    roleCode: 'user_manager',
+    roleName: '用户管理员',
+    description: '管理用户账号',
+    createTime: '2025-01-03 00:00:00',
+    updateTime: '2025-01-03 00:00:00'
+  },
+  {
+    roleId: 4,
+    roleCode: 'order_manager',
+    roleName: '订单管理员',
+    description: '处理订单相关',
+    createTime: '2025-01-04 00:00:00',
+    updateTime: '2025-01-04 00:00:00'
+  },
+  {
+    roleId: 5,
+    roleCode: 'data_analyst',
+    roleName: '数据分析师',
+    description: '查看系统数据报表',
+    createTime: '2025-01-05 00:00:00',
+    updateTime: '2025-01-05 00:00:00'
+  },
+  {
+    roleId: 6,
+    roleCode: 'audit_admin',
+    roleName: '审计管理员',
+    description: '系统操作审计',
+    createTime: '2025-01-06 00:00:00',
+    updateTime: '2025-01-06 00:00:00'
+  },
+  {
+    roleId: 7,
+    roleCode: 'customer_service',
+    roleName: '客服专员',
+    description: '处理客户咨询',
+    createTime: '2025-01-07 00:00:00',
+    updateTime: '2025-01-07 00:00:00'
+  },
+  {
+    roleId: 8,
+    roleCode: 'financial_manager',
+    roleName: '财务管理员',
+    description: '财务相关操作',
+    createTime: '2025-01-08 00:00:00',
+    updateTime: '2025-01-08 00:00:00'
+  },
+  {
+    roleId: 9,
+    roleCode: 'marketing_manager',
+    roleName: '市场运营',
+    description: '市场活动管理',
+    createTime: '2025-01-09 00:00:00',
+    updateTime: '2025-01-09 00:00:00'
+  },
+  {
+    roleId: 10,
+    roleCode: 'developer',
+    roleName: '开发人员',
+    description: '系统开发权限',
+    createTime: '2025-01-10 00:00:00',
+    updateTime: '2025-01-10 00:00:00'
+  },
+  {
+    roleId: 11,
+    roleCode: 'ope_manager',
+    roleName: '运营管理员',
+    description: '运营权限',
+    createTime: '2025-01-11 00:00:00',
+    updateTime: '2025-01-11 00:00:00'
+  }
+]
+
 // 辅助函数：获取当前格式化的时间
 function getCurrentFormattedTime() {
   const now = new Date()
@@ -237,9 +328,9 @@ export default [
       }
       const user = userList[userIndex]
 
-      // 校验：如果用户是 admin，必须包含 systemManager 角色
+      // 校验：如果用户是 admin，必须包含 system_manager 角色
       if (user.username === 'admin') {
-        if (!roleCodes?.includes('systemManager')) {
+        if (!roleCodes?.includes('system_manager')) {
           return {
             code: 400,
             data: null,
@@ -323,6 +414,274 @@ export default [
           )
         },
         message: `成功删除 ${deletedCount} 个用户`
+      }
+    }
+  },
+  // 角色列表查询（带分页）
+  {
+    url: '/api/role/list',
+    method: 'get',
+    response: (request) => {
+      try {
+        const {
+          pageNo = 1,
+          pageSize = 10,
+          roleName,
+          roleCode,
+          roleCodes // 新增：支持多个角色编码查询
+        } = request.query
+
+        // 特殊处理：pageNo = -1 时返回全部数据
+        if (parseInt(pageNo) === -1) {
+          // 如果有批量查询条件，先进行筛选
+          let resultList = [...roleList]
+
+          // 批量编码查询处理
+          if (roleCodes) {
+            const codesArray = Array.isArray(roleCodes) ? roleCodes : roleCodes.split(',')
+            resultList = resultList.filter((item) => codesArray.includes(item.roleCode))
+          }
+
+          return {
+            code: 200,
+            message: '成功',
+            data: {
+              list: resultList,
+              total: resultList.length,
+              page: 1,
+              pageSize: resultList.length
+            }
+          }
+        }
+
+        // 正常分页处理
+        const pageNum = parseInt(pageNo)
+        const size = parseInt(pageSize)
+
+        if (isNaN(pageNum) || isNaN(size) || pageNum < 1 || size < 1) {
+          return {
+            code: 400,
+            message: '参数错误: pageNo和pageSize必须是正整数',
+            data: null
+          }
+        }
+
+        // 数据筛选
+        let filteredList = [...roleList]
+
+        // 按角色名称筛选
+        if (roleName) {
+          filteredList = filteredList.filter((item) => item.roleName.includes(roleName.trim()))
+        }
+
+        // 按单个角色编码筛选
+        if (roleCode) {
+          filteredList = filteredList.filter((item) => item.roleCode.includes(roleCode.trim()))
+        }
+
+        // 批量编码查询处理（新增）
+        if (roleCodes) {
+          const codesArray = Array.isArray(roleCodes) ? roleCodes : roleCodes.split(',')
+          filteredList = filteredList.filter((item) => codesArray.includes(item.roleCode))
+        }
+
+        // 分页处理
+        const start = (pageNum - 1) * size
+        const end = start + size
+        const pageData = filteredList.slice(start, end)
+
+        return {
+          code: 200,
+          message: '成功',
+          data: {
+            list: pageData,
+            total: filteredList.length,
+            page: pageNum,
+            pageSize: size
+          }
+        }
+      } catch (error) {
+        console.error('查询角色列表出错:', error)
+        return {
+          code: 500,
+          message: '服务器内部错误',
+          data: null
+        }
+      }
+    }
+  },
+  // 新增角色
+  {
+    url: '/api/role/add',
+    method: 'post',
+    response: (request) => {
+      try {
+        const newRole = request.body
+
+        // 参数校验
+        if (!newRole.roleName || !newRole.roleCode) {
+          return {
+            code: 400,
+            message: '参数错误: 角色名称和角色编码不能为空',
+            data: null
+          }
+        }
+
+        // 检查角色编码是否已存在
+        const codeExists = roleList.some((item) => item.roleCode === newRole.roleCode)
+        if (codeExists) {
+          return {
+            code: 400,
+            message: '角色编码已存在',
+            data: null
+          }
+        }
+
+        // 生成新ID
+        const newId = Math.max(...roleList.map((item) => item.roleId), 0) + 1
+        const now = getCurrentFormattedTime()
+
+        const roleToAdd = {
+          roleId: newId,
+          roleCode: newRole.roleCode,
+          roleName: newRole.roleName,
+          description: newRole.description || '',
+          createTime: now,
+          updateTime: ''
+        }
+
+        // 添加到内存
+        roleList.unshift(roleToAdd)
+
+        return {
+          code: 200,
+          message: '创建成功',
+          data: roleToAdd
+        }
+      } catch (error) {
+        console.error('创建角色出错:', error)
+        return {
+          code: 500,
+          message: '服务器内部错误',
+          data: null
+        }
+      }
+    }
+  },
+
+  // 修改角色
+  {
+    url: '/api/role/update/:roleId',
+    method: 'put',
+    response: (request) => {
+      try {
+        const { roleId } = request.query
+        const updateData = request.body
+
+        // 参数校验
+        if (!roleId) {
+          return {
+            code: 400,
+            message: '参数错误: 缺少角色ID',
+            data: null
+          }
+        }
+
+        const index = roleList.findIndex((item) => item.roleId == roleId)
+        if (index === -1) {
+          return {
+            code: 404,
+            message: '角色不存在',
+            data: null
+          }
+        }
+
+        // 检查角色编码是否重复（排除自己）
+        if (updateData.roleCode) {
+          const codeExists = roleList.some((item) => item.roleCode === updateData.roleCode && item.roleId != roleId)
+          if (codeExists) {
+            return {
+              code: 400,
+              message: '角色编码已存在',
+              data: null
+            }
+          }
+        }
+
+        // 更新数据
+        const updatedRole = {
+          ...roleList[index],
+          ...updateData,
+          updateTime: getCurrentFormattedTime()
+        }
+
+        // 保存到内存
+        roleList[index] = updatedRole
+
+        return {
+          code: 200,
+          message: '更新成功',
+          data: updatedRole
+        }
+      } catch (error) {
+        console.error('更新角色出错:', error)
+        return {
+          code: 500,
+          message: '服务器内部错误',
+          data: null
+        }
+      }
+    }
+  },
+
+  // 删除角色
+  {
+    url: '/api/role/delete/:roleId',
+    method: 'delete',
+    response: (request) => {
+      try {
+        const { roleId } = request.query
+
+        // 参数校验
+        if (!roleId) {
+          return {
+            code: 400,
+            message: '参数错误: 缺少角色ID',
+            data: null
+          }
+        }
+        if (parseInt(roleId) === 1) {
+          return {
+            code: 401,
+            message: '该角色不能删除',
+            data: null
+          }
+        }
+
+        const index = roleList.findIndex((item) => item.roleId === parseInt(roleId))
+        if (index === -1) {
+          return {
+            code: 404,
+            message: '角色不存在',
+            data: null
+          }
+        }
+
+        // 从内存中删除
+        const [deletedRole] = roleList.splice(index, 1)
+
+        return {
+          code: 200,
+          message: '删除成功',
+          data: deletedRole
+        }
+      } catch (error) {
+        console.error('删除角色出错:', error)
+        return {
+          code: 500,
+          message: '服务器内部错误',
+          data: null
+        }
       }
     }
   }

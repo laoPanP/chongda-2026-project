@@ -89,11 +89,11 @@
 
               <el-checkbox-group v-model="userFormData.roleCodes" @change="handleCheckedChange">
                 <el-checkbox
-                  :disabled="userFormData.userId == 1 && item.value == 'systemManager'"
+                  :disabled="userFormData.userId == 1 && item.roleCode == 'system_manager'"
                   v-for="item in rolesList"
-                  :key="item.value"
-                  :label="item.name"
-                  :value="item.value"
+                  :key="item.roleId"
+                  :label="item.roleName"
+                  :value="item.roleCode"
                 />
               </el-checkbox-group>
             </div>
@@ -113,18 +113,18 @@
   import { ref, reactive, onMounted, watch } from 'vue'
   import { ElMessageBox, ElMessage } from 'element-plus'
   import { userApi } from '@/api'
-  import type { FormInstance, CheckboxValueType } from 'element-plus'
+  import type { FormInstance, CheckboxValueType, FormRules } from 'element-plus'
   import type { PaginationResponseData, CommonResponse } from '@/api/commonType'
-  import type { userInfo, UserAllocationParams } from '@/api/user/type'
+  import type { userInfo, UserAllocationParams, RoleDataTS, queryData, UserAddParams } from '@/api/user/type'
   // 这里放变量、常量
-  let queryForm = reactive({
+  let queryForm = reactive<queryData>({
     pageNo: 1,
     pageSize: 10,
     username: ''
   })
   // 弹框显示状态
   const pageData = reactive({
-    pageSizes: [10, 30, 50, 100, 200],
+    pageSizes: [10, 30, 50, 100, 200] as number[],
     size: 'default',
     disabled: false,
     background: true,
@@ -189,41 +189,28 @@
       align: 'center'
     }
   ]
-  const checkAll = ref(false)
-  const isIndeterminate = ref(true)
+  const checkAll = ref<boolean>(false)
+  const isIndeterminate = ref<boolean>(true)
   //表格数据
-  const tableData = ref<Array<any>>([])
+  const tableData = ref<userInfo[]>([])
   // 搜索表单的dom
   const ruleFormRef = ref<FormInstance>()
   let selectData = ref<userInfo[]>([])
   //是否修改
-  let isChangeFlge = ref(false)
+  let isChangeFlge = ref<boolean>(false)
   // 表单引用
-  const brandForm = ref()
-  const roleForm = ref()
-  const dialogVisible = ref(false)
-  const roleVisible = ref(false)
+  const brandForm = ref<FormInstance>()
+  const roleForm = ref<FormInstance>()
+  const dialogVisible = ref<boolean>(false)
+  const roleVisible = ref<boolean>(false)
   // 表单数据
-  const formData = reactive({
+  const formData = reactive<UserAddParams>({
     userId: null,
     username: '',
     password: '',
     desc: ''
   })
-  let rolesList = ref([
-    {
-      name: '系统管理员',
-      value: 'systemManager'
-    },
-    {
-      name: '平台管理员',
-      value: 'planManager'
-    },
-    {
-      name: '普通用户',
-      value: 'defaultUser'
-    }
-  ])
+  let rolesList = ref<RoleDataTS[]>([])
   //分配用户角色表单数据
   const userFormData = reactive<UserAllocationParams>({
     userId: null,
@@ -232,7 +219,7 @@
     roles: []
   })
   // 表单验证规则
-  const rules = reactive({
+  const rules = reactive<FormRules>({
     username: [
       { required: true, message: '请输入登录账户', trigger: 'blur' },
       { min: 3, max: 10, message: '长度在3到10个字符', trigger: 'change' }
@@ -241,10 +228,10 @@
     desc: [{ required: true, message: '请输入用户名', trigger: 'blur' }]
   })
   // 表单验证规则
-  const userRules = reactive({
+  const userRules = reactive<FormRules>({
     roleCodes: [{ required: true, type: 'array', message: '请选择角色', trigger: 'change' }]
   })
-  let loading = ref(false)
+  let loading = ref<boolean>(false)
 
   // 这里放函数
   // 分签器触发
@@ -344,9 +331,9 @@
       loading.value = true
       userFormData.roles = []
       userFormData.roleCodes.forEach((item: string) => {
-        const matchedRole = rolesList.value.find((role: { value: string; name: string }) => role.value === item)
+        const matchedRole = rolesList.value.find((role: RoleDataTS) => role.roleCode === item)
         if (matchedRole) {
-          userFormData.roles.push(matchedRole.name)
+          userFormData.roles.push(matchedRole.roleName)
         }
       })
       // 这里也可以使用.then
@@ -366,21 +353,33 @@
     userFormData.username = data.username
     userFormData.roleCodes = data.roleCodes
     userFormData.roles = data.roles
+    queryRoleList()
     roleVisible.value = true
+  }
+  //查询全量的角色
+  const queryRoleList = () => {
+    userApi
+      .reqRoleList({
+        pageNo: -1,
+        pageSize: -1
+      })
+      .then((res: PaginationResponseData) => {
+        rolesList.value = res.data.list
+      })
   }
   const handleCheckAllChange = (val: CheckboxValueType) => {
     //如果是系统管理员，则不能对系统管理员角色进行操作
     if (userFormData.userId == 1) {
       if (val) {
-        userFormData.roleCodes = val ? rolesList.value.map((item) => item.value) : []
+        userFormData.roleCodes = val ? rolesList.value.map((item) => item.roleCode) : []
       } else {
-        // 返回只有 'systemManager' 的数组
+        // 返回只有 'system_manager' 的数组
         userFormData.roleCodes = rolesList.value
-          .filter((item) => item.value === 'systemManager')
-          .map((item) => item.value) // 提取 value
+          .filter((item) => item.roleCode === 'system_manager')
+          .map((item) => item.roleCode) // 提取 value
       }
     } else {
-      userFormData.roleCodes = val ? rolesList.value.map((item) => item.value) : []
+      userFormData.roleCodes = val ? rolesList.value.map((item) => item.roleCode) : []
     }
     isIndeterminate.value = false
   }
