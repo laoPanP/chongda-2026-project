@@ -9,7 +9,8 @@ import type {
   UserAddParams,
   UserAllocationParams,
   QueryRoleData,
-  RoleDataTS
+  RoleDataTS,
+  MenuResponse
 } from './type'
 import type { PaginationResponseData, CommonResponse } from '../commonType'
 enum API {
@@ -26,7 +27,9 @@ enum API {
   ROLE_LIST = '/role/list',
   ROLE_DELETE = '/role/delete',
   ROLE_ADD = '/role/add',
-  ROLE_UPDATE = '/role/update'
+  ROLE_UPDATE = '/role/update',
+  // 权限查询
+  MENU_LIST = '/menu/list'
 }
 // 暴露请求函数
 // 登录接口
@@ -59,3 +62,5 @@ export const reqAddRole = (data: RoleDataTS) => request.post<RoleDataTS, CommonR
 // 角色修改
 export const reqUpdateRole = (roleId: number, data: RoleDataTS) =>
   request.put<RoleDataTS, CommonResponse>(`${API.ROLE_UPDATE}/${roleId}`, data)
+// 菜单列表查询、权限分配数据查询
+export const reqMenuList = (ids?: number[]) => request.post<MenuResponse>(API.MENU_LIST, { ids: ids })

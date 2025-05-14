@@ -67,9 +67,31 @@ export interface QueryRoleData {
 // 角色数据基础类型
 export interface RoleDataTS {
   roleId?: number
-  roleCode: string
-  roleName: string
+  roleCode?: string
+  roleName?: string
+  menuIdList: number[]
   description?: string
   createTime?: string
   updateTime?: string
+}
+interface ResponseData {
+  code: number
+  message: string
+}
+export interface MenuData {
+  id: 1
+  createTime: string
+  updateTime: string
+  name: string
+  parentId: number
+  code: string
+  type: number
+  isOpen: boolean
+  status: number | null
+  level: number
+  children?: MenuData[]
+}
+// 菜单查询出差数据类型
+export interface MenuResponse extends ResponseData {
+  data: MenuData[]
 }

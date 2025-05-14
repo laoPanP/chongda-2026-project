@@ -36,6 +36,7 @@ let roleList = [
     roleCode: 'system_manager',
     roleName: '系统管理员',
     description: '拥有系统所有权限',
+    menuIdList: [2, 4, 5],
     createTime: '2025-01-01 00:00:00',
     updateTime: '2025-01-01 00:00:00'
   },
@@ -43,6 +44,7 @@ let roleList = [
     roleId: 2,
     roleCode: 'plan_manager',
     roleName: '平台管理员',
+    menuIdList: [2],
     description: '管理内容发布',
     createTime: '2025-01-02 00:00:00',
     updateTime: '2025-01-02 00:00:00'
@@ -52,6 +54,7 @@ let roleList = [
     roleCode: 'user_manager',
     roleName: '用户管理员',
     description: '管理用户账号',
+    menuIdList: [],
     createTime: '2025-01-03 00:00:00',
     updateTime: '2025-01-03 00:00:00'
   },
@@ -59,6 +62,7 @@ let roleList = [
     roleId: 4,
     roleCode: 'order_manager',
     roleName: '订单管理员',
+    menuIdList: [],
     description: '处理订单相关',
     createTime: '2025-01-04 00:00:00',
     updateTime: '2025-01-04 00:00:00'
@@ -67,6 +71,7 @@ let roleList = [
     roleId: 5,
     roleCode: 'data_analyst',
     roleName: '数据分析师',
+    menuIdList: [],
     description: '查看系统数据报表',
     createTime: '2025-01-05 00:00:00',
     updateTime: '2025-01-05 00:00:00'
@@ -75,6 +80,7 @@ let roleList = [
     roleId: 6,
     roleCode: 'audit_admin',
     roleName: '审计管理员',
+    menuIdList: [],
     description: '系统操作审计',
     createTime: '2025-01-06 00:00:00',
     updateTime: '2025-01-06 00:00:00'
@@ -83,6 +89,7 @@ let roleList = [
     roleId: 7,
     roleCode: 'customer_service',
     roleName: '客服专员',
+    menuIdList: [],
     description: '处理客户咨询',
     createTime: '2025-01-07 00:00:00',
     updateTime: '2025-01-07 00:00:00'
@@ -91,6 +98,7 @@ let roleList = [
     roleId: 8,
     roleCode: 'financial_manager',
     roleName: '财务管理员',
+    menuIdList: [],
     description: '财务相关操作',
     createTime: '2025-01-08 00:00:00',
     updateTime: '2025-01-08 00:00:00'
@@ -99,6 +107,7 @@ let roleList = [
     roleId: 9,
     roleCode: 'marketing_manager',
     roleName: '市场运营',
+    menuIdList: [],
     description: '市场活动管理',
     createTime: '2025-01-09 00:00:00',
     updateTime: '2025-01-09 00:00:00'
@@ -107,6 +116,7 @@ let roleList = [
     roleId: 10,
     roleCode: 'developer',
     roleName: '开发人员',
+    menuIdList: [],
     description: '系统开发权限',
     createTime: '2025-01-10 00:00:00',
     updateTime: '2025-01-10 00:00:00'
@@ -115,12 +125,395 @@ let roleList = [
     roleId: 11,
     roleCode: 'ope_manager',
     roleName: '运营管理员',
+    menuIdList: [],
     description: '运营权限',
+    createTime: '2025-01-11 00:00:00',
+    updateTime: '2025-01-11 00:00:00'
+  },
+  {
+    roleId: 12,
+    roleCode: 'defaultUser',
+    roleName: '普通角色',
+    menuIdList: [2],
+    description: '默认的角色',
     createTime: '2025-01-11 00:00:00',
     updateTime: '2025-01-11 00:00:00'
   }
 ]
-
+let menuList = [
+  {
+    id: 1,
+    createTime: '2025-01-01 00:00:00',
+    updateTime: '2025-01-01 00:00:00',
+    name: '全部数据',
+    parentId: 0,
+    code: '',
+    type: 0,
+    isOpen: false,
+    status: null,
+    level: 0,
+    children: [
+      {
+        id: 2,
+        createTime: '2025-01-01 00:00:00',
+        updateTime: '2025-01-01 00:00:00',
+        name: '数据大屏',
+        code: 'viewDataScreen',
+        parentId: 1,
+        type: 1,
+        isOpen: true,
+        status: null,
+        level: 1,
+        children: []
+      },
+      {
+        id: 3,
+        createTime: '2025-01-01 00:00:00',
+        updateTime: '2025-01-01 00:00:00',
+        name: '权限管理',
+        parentId: 1,
+        code: 'authManage',
+        type: 1,
+        isOpen: false,
+        status: null,
+        level: 1,
+        children: [
+          {
+            id: 4,
+            createTime: '2025-01-01 00:00:00',
+            updateTime: '2025-01-01 00:00:00',
+            name: '用户管理',
+            parentId: 3,
+            code: 'userManage',
+            type: 2,
+            isOpen: false,
+            status: null,
+            level: 2,
+            children: [
+              {
+                id: 5,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '新增',
+                parentId: 4,
+                code: 'add',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 6,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '修改',
+                parentId: 4,
+                code: 'change',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 7,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '删除',
+                parentId: 4,
+                code: 'delete',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 8,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '角色分配',
+                parentId: 4,
+                code: 'allocation',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              }
+            ]
+          },
+          {
+            id: 9,
+            createTime: '2025-01-01 00:00:00',
+            updateTime: '2025-01-01 00:00:00',
+            name: '角色管理',
+            code: 'roleManage',
+            type: 2,
+            parentId: 3,
+            isOpen: false,
+            status: null,
+            level: 2,
+            children: [
+              {
+                id: 10,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '新增',
+                code: 'add',
+                parentId: 9,
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 11,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '修改',
+                parentId: 9,
+                code: 'change',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 12,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '删除',
+                parentId: 9,
+                code: 'delete',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 13,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '权限分配',
+                code: 'auth',
+                type: 3,
+                parentId: 9,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              }
+            ]
+          },
+          {
+            id: 14,
+            createTime: '2025-01-01 00:00:00',
+            updateTime: '2025-01-01 00:00:00',
+            name: '角色管理',
+            code: 'roleManage',
+            type: 2,
+            parentId: 3,
+            isOpen: false,
+            status: null,
+            level: 2,
+            children: [
+              {
+                id: 15,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '新增',
+                code: 'add',
+                parentId: 14,
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 16,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '修改',
+                parentId: 14,
+                code: 'change',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 17,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '删除',
+                parentId: 14,
+                code: 'delete',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 18,
+        createTime: '2025-01-01 00:00:00',
+        updateTime: '2025-01-01 00:00:00',
+        name: '商品管理',
+        parentId: 1,
+        code: 'commodityManage',
+        type: 1,
+        isOpen: false,
+        status: null,
+        level: 1,
+        children: [
+          {
+            id: 19,
+            createTime: '2025-01-01 00:00:00',
+            updateTime: '2025-01-01 00:00:00',
+            name: '品牌管理',
+            parentId: 18,
+            code: 'brandManage',
+            type: 2,
+            isOpen: false,
+            status: null,
+            level: 2,
+            children: [
+              {
+                id: 20,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '新增',
+                parentId: 19,
+                code: 'add',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 21,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '修改',
+                parentId: 19,
+                code: 'change',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 22,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '删除',
+                parentId: 19,
+                code: 'delete',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              }
+            ]
+          },
+          {
+            id: 23,
+            createTime: '2025-01-01 00:00:00',
+            updateTime: '2025-01-01 00:00:00',
+            name: '属性管理',
+            code: 'attrManage',
+            type: 2,
+            parentId: 18,
+            isOpen: false,
+            status: null,
+            level: 2,
+            children: [
+              {
+                id: 24,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '新增',
+                code: 'add',
+                parentId: 23,
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 25,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '修改',
+                parentId: 23,
+                code: 'change',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              },
+              {
+                id: 26,
+                createTime: '2025-01-01 00:00:00',
+                updateTime: '2025-01-01 00:00:00',
+                name: '删除',
+                parentId: 23,
+                code: 'delete',
+                type: 3,
+                isOpen: false,
+                status: null,
+                level: 3,
+                children: []
+              }
+            ]
+          },
+          {
+            id: 27,
+            createTime: '2025-01-01 00:00:00',
+            updateTime: '2025-01-01 00:00:00',
+            name: 'SPU管理',
+            code: 'spuManage',
+            type: 2,
+            parentId: 18,
+            isOpen: false,
+            status: null,
+            level: 2,
+            children: []
+          },
+          {
+            id: 28,
+            createTime: '2025-01-01 00:00:00',
+            updateTime: '2025-01-01 00:00:00',
+            name: 'SKU管理',
+            code: 'skuManage',
+            type: 2,
+            parentId: 18,
+            isOpen: false,
+            status: null,
+            level: 2,
+            children: []
+          }
+        ]
+      }
+    ]
+  }
+]
 // 辅助函数：获取当前格式化的时间
 function getCurrentFormattedTime() {
   const now = new Date()
@@ -545,6 +938,7 @@ export default [
           roleId: newId,
           roleCode: newRole.roleCode,
           roleName: newRole.roleName,
+          menuIdList: [],
           description: newRole.description || '',
           createTime: now,
           updateTime: ''
@@ -677,6 +1071,72 @@ export default [
         }
       } catch (error) {
         console.error('删除角色出错:', error)
+        return {
+          code: 500,
+          message: '服务器内部错误',
+          data: null
+        }
+      }
+    }
+  },
+  // 菜单列表查询接口
+  {
+    url: '/api/menu/list',
+    method: 'post',
+    response: ({ body }) => {
+      try {
+        const { ids } = body
+
+        // 处理ids参数
+        let idArray = []
+        if (ids) {
+          idArray = Array.isArray(ids) ? ids.map((id) => parseInt(id)) : ids.split(',').map((id) => parseInt(id))
+        }
+
+        // 情况1: 没有ids参数或ids为空数组，直接返回完整menuList
+        if (!ids || idArray.length === 0) {
+          return {
+            code: 200,
+            message: '成功',
+            data: menuList
+          }
+        }
+
+        // 情况2: ids有值，递归查找所有匹配的菜单项
+        function findMatchedMenus(menus, targetIds) {
+          let result = []
+          for (const menu of menus) {
+            // 如果当前菜单的id在目标ids中，添加到结果中（去掉children）
+            if (targetIds.includes(menu.id)) {
+              const { children, ...menuWithoutChildren } = menu
+              result.push({ ...menuWithoutChildren, children: [] })
+            }
+
+            // 递归处理子菜单
+            if (menu.children && menu.children.length > 0) {
+              result = result.concat(findMatchedMenus(menu.children, targetIds))
+            }
+          }
+          return result
+        }
+
+        const matchedMenus = findMatchedMenus(menuList, idArray)
+
+        if (matchedMenus.length === 0) {
+          return {
+            code: 404,
+            message: '未找到匹配的菜单项',
+            data: []
+          }
+        }
+
+        return {
+          code: 200,
+          message: '成功',
+          data: matchedMenus
+        }
+      } catch (error) {
+        console.error('查询菜单列表出错:', error)
         return {
           code: 500,
           message: '服务器内部错误',

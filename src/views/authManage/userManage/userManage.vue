@@ -305,7 +305,7 @@
   }
   //新增 修改提交
   const handleSubmit = async () => {
-    brandForm.value.validate(async (valid: boolean) => {
+    brandForm.value?.validate(async (valid: boolean) => {
       if (!valid) return
       loading.value = true
       // 这里也可以使用.then
@@ -326,7 +326,7 @@
   }
   //角色分配提交
   const handleRoleSubmit = async () => {
-    roleForm.value.validate(async (valid: boolean) => {
+    roleForm.value?.validate(async (valid: boolean) => {
       if (!valid) return
       loading.value = true
       userFormData.roles = []

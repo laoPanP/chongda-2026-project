@@ -26,7 +26,7 @@
               :show-overflow-tooltip="item.showOverflowTooltip"
             >
               <template #default="{ row }" v-if="item.key === 'action'">
-                <el-button type="primary" icon="User" @click.stop="setRole(row)">权限分配</el-button>
+                <el-button type="primary" icon="User" @click.stop="setAuth(row)">权限分配</el-button>
                 <el-button type="primary" icon="Edit" @click.stop="changeData(row)">修改</el-button>
                 <el-button type="danger" icon="Delete" @click.stop="deleteData(row)">删除</el-button>
               </template>
@@ -75,34 +75,22 @@
           <el-button :loading="loading" type="primary" @click="handleSubmit">确定</el-button>
         </template>
       </el-drawer>
-      <!-- 角色分配抽屉 -->
-      <el-drawer v-if="roleVisible" v-model="roleVisible" title="分配用户角色">
-        <el-form ref="roleForm" :model="userFormData" :rules="userRules" label-width="120px" label-position="right">
-          <el-form-item label="登录账号：" prop="roleName">
-            <el-input v-model="userFormData.roleName" disabled placeholder="请输入登录账号" clearable />
-          </el-form-item>
-          <el-form-item label="角色分配：" prop="roleCodes">
-            <div class="checkbox-group">
-              <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
-                全选
-              </el-checkbox>
-
-              <el-checkbox-group v-model="userFormData.roleCodes" @change="handleCheckedChange">
-                <el-checkbox
-                  :disabled="userFormData.userId == 1 && item.value == 'systemManager'"
-                  v-for="item in rolesList"
-                  :key="item.value"
-                  :label="item.name"
-                  :value="item.value"
-                />
-              </el-checkbox-group>
-            </div>
-          </el-form-item>
-        </el-form>
-
+      <!-- 权限分配抽屉 -->
+      <el-drawer v-if="authVisible" v-model="authVisible" title="权限分配">
+        <!-- 这个是权限分配 -->
+        <el-tree
+          ref="tree"
+          style="max-width: 600px"
+          :data="menuList"
+          show-checkbox
+          node-key="id"
+          default-expand-all
+          :default-checked-keys="menuIdList"
+          :props="defaultProps"
+        />
         <template #footer>
-          <el-button :loading="loading" @click="roleVisible = false">取消</el-button>
-          <el-button :loading="loading" type="primary" @click="handleRoleSubmit">确定</el-button>
+          <el-button :loading="loading" @click="authVisible = false">取消</el-button>
+          <el-button :loading="loading" type="primary" @click="handleAuthSubmit">确定</el-button>
         </template>
       </el-drawer>
     </el-card>
@@ -113,9 +101,9 @@
   import { ref, reactive, onMounted, watch } from 'vue'
   import { ElMessageBox, ElMessage } from 'element-plus'
   import { userApi } from '@/api'
-  import type { FormInstance, CheckboxValueType, FormRules } from 'element-plus'
+  import type { FormInstance, FormRules } from 'element-plus'
   import type { PaginationResponseData, CommonResponse } from '@/api/commonType'
-  import type { RoleDataTS, UserAllocationParams, queryData } from '@/api/user/type'
+  import type { RoleDataTS, queryData, MenuData, MenuResponse } from '@/api/user/type'
   // 这里放变量、常量
   let queryForm = reactive<queryData>({
     pageNo: 1,
@@ -199,40 +187,18 @@
   const ruleFormRef = ref<FormInstance>()
   //是否修改
   let isChangeFlge = ref<boolean>(false)
-
-  const checkAll = ref<boolean>(false)
-  const isIndeterminate = ref<boolean>(true)
-  // 表单引用
-  const roleForm = ref<FormInstance>()
-  const roleVisible = ref<boolean>(false)
-  let rolesList = ref([
-    {
-      name: '系统管理员',
-      value: 'systemManager'
-    },
-    {
-      name: '平台管理员',
-      value: 'planManager'
-    },
-    {
-      name: '普通用户',
-      value: 'defaultUser'
-    }
-  ])
-  //分配用户角色表单数据
-  const userFormData = reactive<UserAllocationParams>({
-    roleId: null,
-    roleName: '',
-    roleCode: '',
-    description: ''
-  })
-
-  // 表单验证规则
-  const userRules = reactive<FormRules>({
-    roleCodes: [{ required: true, type: 'array', message: '请选择角色', trigger: 'change' }]
-  })
   let loading = ref(false)
-
+  let roleId = ref<number>()
+  let menuIdList = ref<number[]>([])
+  let menuList = reactive<MenuData[]>([])
+  // 表单引用
+  const authVisible = ref<boolean>(false)
+  const defaultProps = {
+    children: 'children',
+    label: 'name'
+  }
+  // 获取tree组件实例
+  let tree = ref<any>()
   // 这里放函数
   // 分签器触发
   const handleSizeChange = (val: number) => {
@@ -295,7 +261,7 @@
   }
   //新增 修改提交
   const handleSubmit = async () => {
-    brandForm.value.validate(async (valid: boolean) => {
+    brandForm.value?.validate(async (valid: boolean) => {
       if (!valid) return
       loading.value = true
       // 这里也可以使用.then
@@ -314,58 +280,45 @@
       }
     })
   }
+  // 权限分配弹框打开
+  const setAuth = async (data: RoleDataTS) => {
+    roleId.value = data.roleId
+    try {
+      await queryMenuList() // 先加载数据
+      menuIdList.value = data.menuIdList || []
+      authVisible.value = true // 数据准备好后再显示弹窗
+    } catch (error) {
+      ElMessage.error('初始化权限数据失败')
+    }
+  }
 
-  //角色分配提交
-  const handleRoleSubmit = async () => {
-    roleForm.value.validate(async (valid: boolean) => {
-      if (!valid) return
-      loading.value = true
-      userFormData.roles = []
-      userFormData.roleCodes.forEach((item: string) => {
-        const matchedRole = rolesList.value.find((role: { value: string; name: string }) => role.value === item)
-        if (matchedRole) {
-          userFormData.roles.push(matchedRole.name)
+  // 查询菜单数据-权限分配
+  const queryMenuList = async () => {
+    try {
+      const res = await userApi.reqMenuList()
+      menuList = Object.assign(menuList, res.data)
+    } catch (error) {
+      ElMessage.error('获取菜单权限数据失败')
+      throw error // 继续抛出错误给上层处理
+    }
+  }
+
+  //权限分配提交
+  const handleAuthSubmit = async () => {
+    let chooseData = tree.value?.getCheckedKeys()
+    if (chooseData.length < 1) {
+      ElMessage.warning('请勾选数据')
+      return
+    }
+    userApi
+      .reqUpdateRole(roleId.value, { menuIdList: chooseData, roleId: roleId.value })
+      .then((res: CommonResponse) => {
+        if (res.code === 200) {
+          ElMessage.success('权限分配成功')
+          authVisible.value = false
+          queryRoleList()
         }
       })
-      // 这里也可以使用.then
-      try {
-        await userApi.reqAllocationUser(userFormData.userId, userFormData)
-        ElMessage.success('操作成功！')
-        roleVisible.value = false
-        loading.value = false
-        queryRoleList()
-      } catch (error) {
-        loading.value = false
-      }
-    })
-  }
-  const setRole = (data: RoleDataTS) => {
-    userFormData.userId = data.userId
-    userFormData.roleName = data.roleName
-    userFormData.roleCodes = data.roleCodes
-    userFormData.roles = data.roles
-    roleVisible.value = true
-  }
-  const handleCheckAllChange = (val: CheckboxValueType) => {
-    //如果是系统管理员，则不能对系统管理员角色进行操作
-    if (userFormData.userId == 1) {
-      if (val) {
-        userFormData.roleCodes = val ? rolesList.value.map((item) => item.value) : []
-      } else {
-        // 返回只有 'systemManager' 的数组
-        userFormData.roleCodes = rolesList.value
-          .filter((item) => item.value === 'systemManager')
-          .map((item) => item.value) // 提取 value
-      }
-    } else {
-      userFormData.roleCodes = val ? rolesList.value.map((item) => item.value) : []
-    }
-    isIndeterminate.value = false
-  }
-  const handleCheckedChange = (value: CheckboxValueType[]) => {
-    const checkedCount = value.length
-    checkAll.value = checkedCount === rolesList.value.length
-    isIndeterminate.value = checkedCount > 0 && checkedCount < rolesList.value.length
   }
   // 这里放监听
   // 方式1：直接监听 + 处理关闭逻辑
