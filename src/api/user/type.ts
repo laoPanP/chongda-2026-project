@@ -79,7 +79,7 @@ interface ResponseData {
   message: string
 }
 export interface MenuData {
-  id: 1
+  id: number
   createTime: string
   updateTime: string
   name: string
@@ -94,4 +94,13 @@ export interface MenuData {
 // 菜单查询出差数据类型
 export interface MenuResponse extends ResponseData {
   data: MenuData[]
+}
+//菜单新增、修改类型
+export interface MenuInfo {
+  id: number
+  name: string
+  parentId: number
+  code: string
+  type: number
+  level: number
 }

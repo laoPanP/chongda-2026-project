@@ -103,7 +103,7 @@
   import { userApi } from '@/api'
   import type { FormInstance, FormRules } from 'element-plus'
   import type { PaginationResponseData, CommonResponse } from '@/api/commonType'
-  import type { RoleDataTS, queryData, MenuData, MenuResponse } from '@/api/user/type'
+  import type { RoleDataTS, queryData, MenuData } from '@/api/user/type'
   // 这里放变量、常量
   let queryForm = reactive<queryData>({
     pageNo: 1,
@@ -296,7 +296,7 @@
   const queryMenuList = async () => {
     try {
       const res = await userApi.reqMenuList()
-      menuList = Object.assign(menuList, res.data)
+      menuList = Object.assign([], res.data)
     } catch (error) {
       ElMessage.error('获取菜单权限数据失败')
       throw error // 继续抛出错误给上层处理

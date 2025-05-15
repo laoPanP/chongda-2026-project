@@ -526,6 +526,59 @@ function getCurrentFormattedTime() {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
+// 根据ID查找菜单
+function findMenuById(menus, id) {
+  for (const menu of menus) {
+    if (menu.id === id) return menu
+    if (menu.children && menu.children.length) {
+      const found = findMenuById(menu.children, id)
+      if (found) return found
+    }
+  }
+  return null
+}
+
+// 查找菜单及其父级
+function findMenuAndParent(menus, id, parent = null) {
+  for (const menu of menus) {
+    if (menu.id === id) return { menu, parent }
+    if (menu.children && menu.children.length) {
+      const found = findMenuAndParent(menu.children, id, menu)
+      if (found.menu) return found
+    }
+  }
+  return { menu: null, parent: null }
+}
+
+// 检查编码是否已存在
+function checkCodeExists(menus, code, excludeId = null) {
+  for (const menu of menus) {
+    if (menu.id !== excludeId && menu.code === code) return true
+    if (menu.children && menu.children.length) {
+      if (checkCodeExists(menu.children, code, excludeId)) return true
+    }
+  }
+  return false
+}
+
+// 获取所有菜单ID
+function getAllMenuIds(menus) {
+  let ids = []
+  for (const menu of menus) {
+    ids.push(menu.id)
+    if (menu.children && menu.children.length) {
+      ids = ids.concat(getAllMenuIds(menu.children))
+    }
+  }
+  return ids
+}
+
+// 根据父级类型确定子级类型
+function getChildType(parentId) {
+  const parent = findMenuById(menuList, parentId)
+  if (!parent) return 1
+  return parent.type + 1
+}
 // 模拟数据库存储
 let userList = createUserList()
 export default [
@@ -1140,6 +1193,199 @@ export default [
         return {
           code: 500,
           message: '服务器内部错误',
+          data: null
+        }
+      }
+    }
+  },
+  // 菜单新增
+  {
+    url: '/api/menu/add',
+    method: 'post',
+    response: ({ body }) => {
+      try {
+        const { parentId, name, code, level, type } = body
+
+        // 验证必填字段
+        if (!name || !code) {
+          return {
+            code: 400,
+            message: '菜单名称和编码不能为空'
+          }
+        }
+
+        // 查找父级菜单
+        let parentMenu = null
+        let siblings = menuList
+
+        if (parentId) {
+          parentMenu = findMenuById(menuList, parentId)
+          if (!parentMenu) {
+            return {
+              code: 404,
+              message: '父级菜单不存在'
+            }
+          }
+          siblings = parentMenu.children || []
+        }
+
+        // 检查code是否已存在
+        if (checkCodeExists(menuList, code)) {
+          return {
+            code: 400,
+            message: '菜单编码已存在'
+          }
+        }
+
+        // 生成新ID (实际项目应该用更可靠的方式)
+        const newId = Math.max(...getAllMenuIds(menuList), 0) + 1
+        const now = new Date().toISOString()
+
+        // 创建新菜单项
+        const newMenu = {
+          id: newId,
+          createTime: getCurrentFormattedTime(),
+          updateTime: '',
+          name,
+          parentId: parentId || 0,
+          code,
+          type, // 根据父级决定类型
+          isOpen: false,
+          status: null,
+          level,
+          children: []
+        }
+
+        // 添加到对应层级
+        if (parentMenu) {
+          parentMenu.children.push(newMenu)
+        } else {
+          menuList[0].children.push(newMenu) // 默认添加到根菜单下
+        }
+
+        return {
+          code: 200,
+          message: '新增成功',
+          data: newMenu
+        }
+      } catch (error) {
+        return {
+          code: 500,
+          message: '新增菜单失败',
+          data: null
+        }
+      }
+    }
+  },
+  //菜单修改
+  {
+    url: '/api/menu/update/:id',
+    method: 'put',
+    response: (request) => {
+      try {
+        const { id } = request.query
+        const { name, code } = request.body
+
+        // 验证必填字段
+        if (!name || !code) {
+          return {
+            code: 400,
+            message: '菜单名称和编码不能为空',
+            data: null
+          }
+        }
+
+        // 查找要修改的菜单
+        const menuToUpdate = findMenuById(menuList, parseInt(id))
+        if (!menuToUpdate) {
+          return {
+            code: 404,
+            message: '菜单不存在',
+            data: null
+          }
+        }
+
+        // 检查code是否被其他菜单使用
+        if (code !== menuToUpdate.code && checkCodeExists(menuList, code)) {
+          return {
+            code: 400,
+            message: '菜单编码已存在',
+            data: null
+          }
+        }
+
+        // 更新菜单信息
+        menuToUpdate.name = name
+        menuToUpdate.code = code
+        menuToUpdate.updateTime = getCurrentFormattedTime()
+
+        return {
+          code: 200,
+          message: '修改成功',
+          data: menuToUpdate
+        }
+      } catch (error) {
+        return {
+          code: 500,
+          message: '修改菜单失败',
+          data: null
+        }
+      }
+    }
+  },
+  // 菜单删除
+  {
+    url: '/api/menu/delete/:id',
+    method: 'delete',
+    response: (request) => {
+      try {
+        const { id } = request.query
+        const menuId = parseInt(id)
+
+        // 不能删除根菜单
+        if (menuId === 1) {
+          return {
+            code: 403,
+            message: '不能删除根菜单',
+            data: null
+          }
+        }
+
+        // 查找菜单及其父级
+        const { menu, parent } = findMenuAndParent(menuList, menuId)
+        if (!menu) {
+          return {
+            code: 404,
+            message: '菜单不存在',
+            data: null
+          }
+        }
+
+        // 检查是否有子菜单
+        if (menu.children && menu.children.length > 0) {
+          return {
+            code: 400,
+            message: '请先删除子菜单',
+            data: null
+          }
+        }
+
+        // 从父级中删除
+        const parentChildren = parent ? parent.children : menuList[0].children
+        const index = parentChildren.findIndex((item) => item.id === menuId)
+        if (index !== -1) {
+          parentChildren.splice(index, 1)
+        }
+
+        return {
+          code: 200,
+          message: '删除成功',
+          data: null
+        }
+      } catch (error) {
+        return {
+          code: 500,
+          message: '删除菜单失败',
           data: null
         }
       }

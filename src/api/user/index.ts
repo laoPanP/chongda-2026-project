@@ -10,7 +10,9 @@ import type {
   UserAllocationParams,
   QueryRoleData,
   RoleDataTS,
-  MenuResponse
+  MenuResponse,
+  MenuData,
+  MenuInfo
 } from './type'
 import type { PaginationResponseData, CommonResponse } from '../commonType'
 enum API {
@@ -29,7 +31,10 @@ enum API {
   ROLE_ADD = '/role/add',
   ROLE_UPDATE = '/role/update',
   // 权限查询
-  MENU_LIST = '/menu/list'
+  MENU_LIST = '/menu/list',
+  MENU_ADD = '/menu/add',
+  MENU_UPDATE = '/menu/update',
+  MENU_DELETE = '/menu/delete'
 }
 // 暴露请求函数
 // 登录接口
@@ -64,3 +69,10 @@ export const reqUpdateRole = (roleId: number, data: RoleDataTS) =>
   request.put<RoleDataTS, CommonResponse>(`${API.ROLE_UPDATE}/${roleId}`, data)
 // 菜单列表查询、权限分配数据查询
 export const reqMenuList = (ids?: number[]) => request.post<MenuResponse>(API.MENU_LIST, { ids: ids })
+// 菜单新增
+export const reqAddMenu = (data: MenuInfo) => request.post<MenuInfo, CommonResponse>(API.MENU_ADD, data)
+// 菜单修改
+export const reqUpdateMenu = (id: number, data: MenuInfo) =>
+  request.put<MenuInfo, CommonResponse>(`${API.MENU_UPDATE}/${id}`, data)
+// 菜单删除
+export const reqDeleteMenu = (id: number) => request.delete<any, CommonResponse>(`${API.MENU_DELETE}/${id}`)
