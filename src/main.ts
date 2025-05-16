@@ -6,6 +6,8 @@ import 'element-plus/dist/index.css'
 // 配置element-plus国际化 配置中文（默认英文）
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+//主题暗黑模式样式
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 // 引入路由
 import router from './router'

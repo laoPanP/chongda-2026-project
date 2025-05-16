@@ -46,10 +46,10 @@
       }
     }
     .layout_menu_item:hover {
-      background: #2d7cf1;
+      background: $primary-choose-color;
     }
     .layout_menu_item_choose {
-      background: #2d7cf1;
+      background: $primary-choose-color;
     }
   }
 </style>

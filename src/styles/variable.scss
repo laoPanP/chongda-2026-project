@@ -1,8 +1,14 @@
 //给项目提供scss全局变量
 // 主题颜色
-$primary-color: #409eff;
+$primary-color: var(--el-color-primary);
 // 页面背景颜色
-$base-page-color: #f5f5f5;
+$base-page-color: var(--el-bg-color-page);
+//二级页面页面背景颜色
+$base-view-page-color: var(--el-bg-color);
+// 左侧菜单背景颜色
+$base-menu-color: var(--el-bg-color);
+// 顶部菜单选中背景颜色
+$primary-choose-color: color-mix(in srgb, var(--el-color-primary) 80%, white);
 // 顶部导航高度
 $base-header-height: 60px;
 // 页面区域顶部导航栏高度
@@ -11,9 +17,5 @@ $base_pageTab-height: 40px;
 $base-menu-width: 260px;
 // 左侧菜单折叠宽度
 $base-menu-minWidth: 60px;
-// 左侧菜单背景颜色
-$base-menu-color: #fff;
 // 顶部logo后文字大小
 $base-logoTitle-fontSize: 20px;
-//二级页面页面背景颜色
-$base-view-page-color: #fff;

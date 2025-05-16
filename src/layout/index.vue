@@ -73,8 +73,8 @@
       top: 0;
       width: 100%;
       height: $base-header-height;
-      // background-color: $primary-color;
-      background: linear-gradient(45deg, $primary-color 0%, rgb(253, 225.6, 225.6) 100%); /* 水平渐变 */
+      background-color: $primary-color;
+      // background: linear-gradient(45deg, $primary-color 0%, rgb(253, 225.6, 225.6) 100%); /* 水平渐变 */
       display: flex;
       .layout_left {
         width: $base-menu-width;
