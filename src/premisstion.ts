@@ -45,6 +45,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     // 3.1 确保权限已加载
     if (!userStore.userInfo.username || !userStore.menuRoutes.length) {
       await userStore.getUserInfo()
+      return next({ ...to })
     }
     // 3.2 登录后访问/login则跳首页
     if (to.path === '/login') {
@@ -59,12 +60,26 @@ router.beforeEach(async (to: any, from: any, next: any) => {
       })
       return next('/') // 强制跳转
     }
-    // 3.4 正常放行
     next()
+    // 3.4 正常放行
   } catch (error) {
-    // 清除无效token
-    await userStore.logout()
-    next(`/login?redirect=${to.path}`)
+    //token过期 | 用户手动修改本地token
+    try {
+      // 1.清除token
+      await userStore.logout()
+    } catch (logoutError) {
+    } finally {
+      //防止登录失败接口也报错时，因为无法继续往后执行，造成一直重复调用接口，无法跳转页面
+      // 强制清除本地 token 和用户信息
+      userStore.token = ''
+      userStore.userInfo = {}
+      REMOVE_TOKEN()
+      localStorage.removeItem('userInfo')
+      next({
+        path: '/login',
+        query: { redirect: to.path }
+      })
+    }
   }
 })
 //全局后置守卫

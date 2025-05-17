@@ -12,7 +12,9 @@
       </el-form>
     </el-card>
     <el-card>
-      <el-button type="primary" icon="Plus" @click="addRole">添加角色</el-button>
+      <el-button type="primary" icon="Plus" @click="addRole" v-isButton="'authManage.roleManage.add'">
+        添加角色
+      </el-button>
       <div class="mt16">
         <el-table :data="tableData" border stripe style="width: 100%">
           <template v-for="(item, index) in columns" :key="item.key || item.type">
@@ -26,9 +28,30 @@
               :show-overflow-tooltip="item.showOverflowTooltip"
             >
               <template #default="{ row }" v-if="item.key === 'action'">
-                <el-button type="primary" icon="User" @click.stop="setAuth(row)">权限分配</el-button>
-                <el-button type="primary" icon="Edit" @click.stop="changeData(row)">修改</el-button>
-                <el-button type="danger" icon="Delete" @click.stop="deleteData(row)">删除</el-button>
+                <el-button
+                  type="primary"
+                  icon="User"
+                  @click.stop="setAuth(row)"
+                  v-isButton="'authManage.roleManage.auth'"
+                >
+                  权限分配
+                </el-button>
+                <el-button
+                  type="primary"
+                  icon="Edit"
+                  @click.stop="changeData(row)"
+                  v-isButton="'authManage.roleManage.change'"
+                >
+                  修改
+                </el-button>
+                <el-button
+                  type="danger"
+                  icon="Delete"
+                  @click.stop="deleteData(row)"
+                  v-isButton="'authManage.roleManage.delete'"
+                >
+                  删除
+                </el-button>
               </template>
             </el-table-column>
           </template>

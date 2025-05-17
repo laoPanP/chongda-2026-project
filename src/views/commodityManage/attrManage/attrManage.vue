@@ -39,7 +39,9 @@
       </el-form>
     </el-card>
     <el-card>
-      <el-button type="primary" icon="Plus" @click="addAttr">添加属性</el-button>
+      <el-button type="primary" icon="Plus" @click="addAttr" v-isButton="'commodityManage.attrManage.add'">
+        添加属性
+      </el-button>
       <div class="mt16">
         <el-table :data="tableData" border stripe style="width: 100%">
           <template v-for="(item, index) in columns" :key="item.key || item.type">
@@ -64,8 +66,22 @@
                 </div>
               </template>
               <template #default="{ row }" v-else-if="item.key === 'action'">
-                <el-button type="primary" icon="Edit" @click.stop="changeData(row)">修改</el-button>
-                <el-button type="danger" icon="Delete" @click.stop="deleteData(row)">删除</el-button>
+                <el-button
+                  type="primary"
+                  icon="Edit"
+                  @click.stop="changeData(row)"
+                  v-isButton="'commodityManage.attrManage..change'"
+                >
+                  修改
+                </el-button>
+                <el-button
+                  type="danger"
+                  icon="Delete"
+                  @click.stop="deleteData(row)"
+                  v-isButton="'commodityManage.attrManage.delete'"
+                >
+                  删除
+                </el-button>
               </template>
             </el-table-column>
           </template>

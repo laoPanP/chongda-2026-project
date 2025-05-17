@@ -12,8 +12,17 @@
       </el-form>
     </el-card>
     <el-card>
-      <el-button type="primary" icon="Plus" @click="addUser">添加用户</el-button>
-      <el-button type="danger" icon="Delete" @click="deleteData(selectData)">批量删除</el-button>
+      <el-button type="primary" icon="Plus" @click="addUser" v-isButton="'authManage.userManage.add'">
+        添加用户
+      </el-button>
+      <el-button
+        type="danger"
+        icon="Delete"
+        @click="deleteData(selectData)"
+        v-isButton="'authManage.userManage.delete'"
+      >
+        批量删除
+      </el-button>
       <div class="mt16">
         <el-table :data="tableData" border stripe style="width: 100%" @selection-change="getSelectionRows">
           <template v-for="(item, index) in columns" :key="item.key || item.type">
@@ -33,9 +42,30 @@
                 <span>{{ row.roles.join('、') }}</span>
               </template>
               <template #default="{ row }" v-else-if="item.key === 'action'">
-                <el-button type="primary" icon="User" @click.stop="setRole(row)">角色分配</el-button>
-                <el-button type="primary" icon="Edit" @click.stop="changeData(row)">修改</el-button>
-                <el-button type="danger" icon="Delete" @click.stop="deleteData([row])">删除</el-button>
+                <el-button
+                  type="primary"
+                  icon="User"
+                  @click.stop="setRole(row)"
+                  v-isButton="'authManage.userManage.allocation'"
+                >
+                  角色分配
+                </el-button>
+                <el-button
+                  type="primary"
+                  icon="Edit"
+                  @click.stop="changeData(row)"
+                  v-isButton="'authManage.userManage.change'"
+                >
+                  修改
+                </el-button>
+                <el-button
+                  type="danger"
+                  icon="Delete"
+                  @click.stop="deleteData([row])"
+                  v-isButton="'authManage.userManage.delete'"
+                >
+                  删除
+                </el-button>
               </template>
             </el-table-column>
           </template>

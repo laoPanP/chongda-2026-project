@@ -609,50 +609,71 @@ export default [
     url: '/api/user/info',
     method: 'get',
     response: (request) => {
-      //获取请求头携带token
       const token = request.headers.token
-      //查看用户信息是否包含有次token用户
       const checkUser = userList.find((item) => item.token === token)
-      //没有返回失败的信息
       if (!checkUser) {
         return { code: 201, data: '失败', message: '获取用户信息失败' }
       }
-      // 1. 根据roleCodes获取所有角色
+
+      // 1. 获取用户角色
       const userRoles = roleList.filter((role) => checkUser.roleCodes.includes(role.roleCode))
 
-      // 2. 获取所有menuId (去重)
+      // 2. 获取所有有权限的菜单ID（包括父级）
       const allMenuIds = [...new Set(userRoles.flatMap((role) => role.menuIdList))]
 
-      // 3. 在menuList中查找所有匹配的菜单项
-      const matchedMenus = []
-      const findMenusByIds = (menus, ids) => {
-        for (const menu of menus) {
-          if (ids.includes(menu.id)) {
-            matchedMenus.push(menu)
-          }
-          if (menu.children && menu.children.length) {
-            findMenusByIds(menu.children, ids)
-          }
-        }
-      }
-      findMenusByIds(menuList, allMenuIds)
+      // 3. 递归查找菜单（保留父级结构）
+      const findAccessibleMenus = (menus, accessibleIds) => {
+        return menus
+          .map((menu) => {
+            // 深拷贝避免污染原始数据
+            const menuCopy = JSON.parse(JSON.stringify(menu))
 
-      // 4. 处理routes和buttons
-      const routes = matchedMenus
-        .filter((menu) => menu.type === 1 || menu.type === 2)
+            // 处理子菜单
+            if (menuCopy.children) {
+              menuCopy.children = findAccessibleMenus(menuCopy.children, accessibleIds)
+            }
+
+            // 判断是否保留当前菜单：
+            // - 当前菜单在权限列表中 或
+            // - 有子菜单且子菜单不为空（子菜单有权限）
+            const shouldKeep =
+              accessibleIds.includes(menuCopy.id) || (menuCopy.children && menuCopy.children.length > 0)
+
+            return shouldKeep ? menuCopy : null
+          })
+          .filter(Boolean) // 过滤掉null项
+      }
+
+      const accessibleMenus = findAccessibleMenus(menuList, allMenuIds)
+
+      // 4. 提取routes和buttons
+      const flattenMenus = (menus) => {
+        return menus.flatMap((menu) => [menu, ...(menu.children ? flattenMenus(menu.children) : [])])
+      }
+
+      const allMenus = flattenMenus(accessibleMenus)
+      const routes = allMenus
+        .filter((menu) => [1, 2].includes(menu.type))
         .map((menu) => menu.code)
-        .filter((code) => code)
-      const buttons = matchedMenus
+        .filter(Boolean)
+
+      const buttons = allMenus
         .filter((menu) => menu.type === 3)
         .map((menu) => menu.code)
-        .filter((code) => code)
-      let userInfo = {
-        ...checkUser,
-        routes,
-        buttons
+        .filter(Boolean)
+
+      // 5. 返回数据
+      return {
+        code: 200,
+        data: {
+          ...checkUser,
+          routes,
+          buttons,
+          // 如果需要前端渲染菜单树，可以返回完整结构
+          menuTree: accessibleMenus
+        },
+        message: '成功'
       }
-      //如果有返回成功信息
-      return { code: 200, data: userInfo, message: '成功' }
     }
   },
   //退出登录

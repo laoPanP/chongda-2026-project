@@ -1,7 +1,9 @@
 <template>
   <div>
     <el-card>
-      <el-button type="primary" icon="Plus" @click="addBrand">添加品牌</el-button>
+      <el-button type="primary" icon="Plus" @click="addBrand" v-isButton="'commodityManage.brandManage.add'">
+        添加品牌
+      </el-button>
       <div class="mt16">
         <el-table :data="tableData" border stripe style="width: 100%">
           <template v-for="(item, index) in columns" :key="item.key || item.type">
@@ -17,8 +19,22 @@
                 <el-image :src="row.brandLogo" style="width: 60px; height: 60px" />
               </template>
               <template #default="{ row }" v-else-if="item.key === 'action'">
-                <el-button type="primary" icon="Edit" @click.stop="changeData(row)">修改</el-button>
-                <el-button type="danger" icon="Delete" @click.stop="deleteData(row)">删除</el-button>
+                <el-button
+                  type="primary"
+                  icon="Edit"
+                  @click.stop="changeData(row)"
+                  v-isButton="'commodityManage.brandManage.change'"
+                >
+                  修改
+                </el-button>
+                <el-button
+                  type="danger"
+                  icon="Delete"
+                  @click.stop="deleteData(row)"
+                  v-isButton="'commodityManage.brandManage.delete'"
+                >
+                  删除
+                </el-button>
               </template>
             </el-table-column>
           </template>

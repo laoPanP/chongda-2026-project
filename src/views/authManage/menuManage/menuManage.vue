@@ -16,13 +16,31 @@
                 <el-image :src="row.brandLogo" style="width: 60px; height: 60px" />
               </template>
               <template #default="{ row }" v-else-if="item.key === 'action'">
-                <el-button type="primary" :disabled="row.level === 3" icon="Plus" @click.stop="addMenu(row)">
+                <el-button
+                  type="primary"
+                  :disabled="row.level === 3"
+                  icon="Plus"
+                  @click.stop="addMenu(row)"
+                  v-isButton="'authManage.menuManage.add'"
+                >
                   新增菜单
                 </el-button>
-                <el-button type="primary" icon="Edit" @click.stop="changeData(row)" :disabled="row.level === 0">
+                <el-button
+                  type="primary"
+                  icon="Edit"
+                  @click.stop="changeData(row)"
+                  :disabled="row.level === 0"
+                  v-isButton="'authManage.menuManage.change'"
+                >
                   编辑菜单
                 </el-button>
-                <el-button type="danger" icon="Delete" @click.stop="deleteData(row)" :disabled="row.level === 0">
+                <el-button
+                  type="danger"
+                  icon="Delete"
+                  @click.stop="deleteData(row)"
+                  :disabled="row.level === 0"
+                  v-isButton="'authManage.menuManage.delete'"
+                >
                   删除
                 </el-button>
               </template>
