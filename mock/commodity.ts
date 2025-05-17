@@ -238,7 +238,6 @@ export default [
         const start = (pageNum - 1) * size
         const end = start + size
         const pageList = filteredList.slice(start, end) // slice(start, end) 包含start，不包含end
-        console.log('start:', start)
         return {
           code: 200,
           message: '成功',

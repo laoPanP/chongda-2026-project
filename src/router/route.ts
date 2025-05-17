@@ -1,4 +1,4 @@
-// 常量路由
+// 常量路由（任意角色可以访问）
 export const constantRoute = [
   {
     path: '/',
@@ -23,6 +23,27 @@ export const constantRoute = [
       }
     ]
   },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index.vue'),
+    name: 'login',
+    meta: {
+      title: '登录', //菜单标题
+      hidden: true
+    }
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/404/index.vue'),
+    name: '404',
+    meta: {
+      title: '404', //菜单标题
+      hidden: true
+    }
+  }
+]
+// 异步路由
+export const asyncRoute = [
   {
     path: '/viewDataScreen',
     component: () => import('@/views/viewDateScreen/viewDateScreen.vue'),
@@ -128,26 +149,10 @@ export const constantRoute = [
         }
       }
     ]
-  },
-  {
-    path: '/login',
-    component: () => import('@/views/login/index.vue'),
-    name: 'login',
-    meta: {
-      title: '登录', //菜单标题
-      hidden: true
-    }
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/404/index.vue'),
-    name: '404',
-    meta: {
-      title: '404', //菜单标题
-      hidden: true
-    }
-  },
-  //任意路由，重定向到404
+  }
+]
+//任意路由 重定向到404
+export const anyRoute = [
   {
     path: '/:pathMatch(.*)*',
     redirect: '/404',
@@ -158,3 +163,5 @@ export const constantRoute = [
     }
   }
 ]
+// 路由白名单
+export const whiteList = ['/login', '/404']

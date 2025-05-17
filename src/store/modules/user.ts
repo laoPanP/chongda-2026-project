@@ -7,7 +7,26 @@ import type { UserState } from './types/type'
 //引入操作本地存储的工具方法
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 //引入路由
-import { constantRoute } from '@/router/route.ts'
+import { constantRoute, asyncRoute, anyRoute } from '@/router/route.ts'
+import router from '@/router'
+// 引入清除动态路由的方法
+import { resetRouter } from '@/utils/clearRoute/clearRoute'
+//引入深拷贝
+//@ts-ignore
+import cloneDeep from 'lodash/cloneDeep'
+
+// 过滤当前用户需要展示的异步路由
+function filterAsyncRoute(asyncRoute: any, routes: any) {
+  return asyncRoute.filter((item: any) => {
+    if (routes.includes(item.name)) {
+      if (item.children && item.children.length > 0) {
+        item.children = filterAsyncRoute(item.children, routes)
+      }
+      return true
+    }
+  })
+}
+
 // 创建用户仓库
 let useUserStore = defineStore('User', {
   //存储数据
@@ -25,6 +44,8 @@ let useUserStore = defineStore('User', {
       let result: LoginResponseData = await reqLogin(data)
       if (result.code == 200) {
         this.setToken(result.data)
+        // 登录成功后立即获取用户信息（关键修改！）
+        await this.getUserInfo()
         return 'ok'
       } else {
         return Promise.reject(new Error(result.message))
@@ -35,6 +56,13 @@ let useUserStore = defineStore('User', {
       let result = await reqUserInfo()
       if (result.code == 200) {
         this.setUserInfo(result.data)
+        let userRoute = filterAsyncRoute(cloneDeep(asyncRoute), result.data.routes)
+        this.menuRoutes = [...constantRoute, ...anyRoute, ...userRoute]
+        // 路由追加过滤得到的路由及任意路由
+        let routerList = [...anyRoute, ...userRoute]
+        routerList.forEach((item: any) => {
+          router.addRoute(item)
+        })
         return 'ok'
       } else {
         return Promise.reject(new Error(result.message))

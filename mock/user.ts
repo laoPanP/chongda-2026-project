@@ -36,7 +36,7 @@ let roleList = [
     roleCode: 'system_manager',
     roleName: '系统管理员',
     description: '拥有系统所有权限',
-    menuIdList: [2, 4, 5],
+    menuIdList: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
     createTime: '2025-01-01 00:00:00',
     updateTime: '2025-01-01 00:00:00'
   },
@@ -51,12 +51,12 @@ let roleList = [
   },
   {
     roleId: 3,
-    roleCode: 'user_manager',
-    roleName: '用户管理员',
-    description: '管理用户账号',
-    menuIdList: [],
-    createTime: '2025-01-03 00:00:00',
-    updateTime: '2025-01-03 00:00:00'
+    roleCode: 'defaultUser',
+    roleName: '普通用户',
+    menuIdList: [2],
+    description: '默认角色',
+    createTime: '2025-01-02 00:00:00',
+    updateTime: '2025-01-02 00:00:00'
   },
   {
     roleId: 4,
@@ -132,12 +132,12 @@ let roleList = [
   },
   {
     roleId: 12,
-    roleCode: 'defaultUser',
-    roleName: '普通角色',
-    menuIdList: [2],
-    description: '默认的角色',
-    createTime: '2025-01-11 00:00:00',
-    updateTime: '2025-01-11 00:00:00'
+    roleCode: 'user_manager',
+    roleName: '用户管理员',
+    description: '管理用户账号',
+    menuIdList: [],
+    createTime: '2025-01-03 00:00:00',
+    updateTime: '2025-01-03 00:00:00'
   }
 ]
 let menuList = [
@@ -196,7 +196,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '新增',
                 parentId: 4,
-                code: 'add',
+                code: 'authManage.userManage.add',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -209,7 +209,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '修改',
                 parentId: 4,
-                code: 'change',
+                code: 'authManage.userManage.change',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -222,7 +222,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '删除',
                 parentId: 4,
-                code: 'delete',
+                code: 'authManage.userManage.delete',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -235,7 +235,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '角色分配',
                 parentId: 4,
-                code: 'allocation',
+                code: 'authManage.userManage.allocation',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -261,7 +261,7 @@ let menuList = [
                 createTime: '2025-01-01 00:00:00',
                 updateTime: '2025-01-01 00:00:00',
                 name: '新增',
-                code: 'add',
+                code: 'authManage.roleManage.add',
                 parentId: 9,
                 type: 3,
                 isOpen: false,
@@ -275,7 +275,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '修改',
                 parentId: 9,
-                code: 'change',
+                code: 'authManage.roleManage.change',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -288,7 +288,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '删除',
                 parentId: 9,
-                code: 'delete',
+                code: 'authManage.roleManage.delete',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -300,7 +300,7 @@ let menuList = [
                 createTime: '2025-01-01 00:00:00',
                 updateTime: '2025-01-01 00:00:00',
                 name: '权限分配',
-                code: 'auth',
+                code: 'authManage.roleManage.auth',
                 type: 3,
                 parentId: 9,
                 isOpen: false,
@@ -314,8 +314,8 @@ let menuList = [
             id: 14,
             createTime: '2025-01-01 00:00:00',
             updateTime: '2025-01-01 00:00:00',
-            name: '角色管理',
-            code: 'roleManage',
+            name: '菜单管理',
+            code: 'menuManage',
             type: 2,
             parentId: 3,
             isOpen: false,
@@ -327,7 +327,7 @@ let menuList = [
                 createTime: '2025-01-01 00:00:00',
                 updateTime: '2025-01-01 00:00:00',
                 name: '新增',
-                code: 'add',
+                code: 'authManage.menuManage.add',
                 parentId: 14,
                 type: 3,
                 isOpen: false,
@@ -341,7 +341,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '修改',
                 parentId: 14,
-                code: 'change',
+                code: 'authManage.menuManage.change',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -354,7 +354,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '删除',
                 parentId: 14,
-                code: 'delete',
+                code: 'authManage.menuManage.delete',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -395,7 +395,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '新增',
                 parentId: 19,
-                code: 'add',
+                code: 'commodityManage.brandManage.add',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -408,7 +408,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '修改',
                 parentId: 19,
-                code: 'change',
+                code: 'commodityManage.brandManage.change',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -421,7 +421,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '删除',
                 parentId: 19,
-                code: 'delete',
+                code: 'commodityManage.brandManage.delete',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -447,7 +447,7 @@ let menuList = [
                 createTime: '2025-01-01 00:00:00',
                 updateTime: '2025-01-01 00:00:00',
                 name: '新增',
-                code: 'add',
+                code: 'commodityManage.attrManage.add',
                 parentId: 23,
                 type: 3,
                 isOpen: false,
@@ -461,7 +461,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '修改',
                 parentId: 23,
-                code: 'change',
+                code: 'commodityManage.attrManage.change',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -474,7 +474,7 @@ let menuList = [
                 updateTime: '2025-01-01 00:00:00',
                 name: '删除',
                 parentId: 23,
-                code: 'delete',
+                code: 'commodityManage.attrManage.delete',
                 type: 3,
                 isOpen: false,
                 status: null,
@@ -617,8 +617,42 @@ export default [
       if (!checkUser) {
         return { code: 201, data: '失败', message: '获取用户信息失败' }
       }
+      // 1. 根据roleCodes获取所有角色
+      const userRoles = roleList.filter((role) => checkUser.roleCodes.includes(role.roleCode))
+
+      // 2. 获取所有menuId (去重)
+      const allMenuIds = [...new Set(userRoles.flatMap((role) => role.menuIdList))]
+
+      // 3. 在menuList中查找所有匹配的菜单项
+      const matchedMenus = []
+      const findMenusByIds = (menus, ids) => {
+        for (const menu of menus) {
+          if (ids.includes(menu.id)) {
+            matchedMenus.push(menu)
+          }
+          if (menu.children && menu.children.length) {
+            findMenusByIds(menu.children, ids)
+          }
+        }
+      }
+      findMenusByIds(menuList, allMenuIds)
+
+      // 4. 处理routes和buttons
+      const routes = matchedMenus
+        .filter((menu) => menu.type === 1 || menu.type === 2)
+        .map((menu) => menu.code)
+        .filter((code) => code)
+      const buttons = matchedMenus
+        .filter((menu) => menu.type === 3)
+        .map((menu) => menu.code)
+        .filter((code) => code)
+      let userInfo = {
+        ...checkUser,
+        routes,
+        buttons
+      }
       //如果有返回成功信息
-      return { code: 200, data: checkUser, message: '成功' }
+      return { code: 200, data: userInfo, message: '成功' }
     }
   },
   //退出登录
