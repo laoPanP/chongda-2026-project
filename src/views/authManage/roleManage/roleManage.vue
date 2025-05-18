@@ -17,7 +17,7 @@
       </el-button>
       <div class="mt16">
         <el-table :data="tableData" border stripe style="width: 100%">
-          <template v-for="(item, index) in columns" :key="item.key || item.type">
+          <template v-for="item in columns" :key="item.key || item.type">
             <el-table-column
               :type="item.type"
               :width="item.width"
@@ -126,9 +126,9 @@
   import { userApi } from '@/api'
   import type { FormInstance, FormRules } from 'element-plus'
   import type { PaginationResponseData, CommonResponse } from '@/api/commonType'
-  import type { RoleDataTS, queryData, MenuData } from '@/api/user/type'
+  import type { RoleDataTS, RoleQueryData, MenuData } from '@/api/user/type'
   // 这里放变量、常量
-  let queryForm = reactive<queryData>({
+  let queryForm = reactive<RoleQueryData>({
     pageNo: 1,
     pageSize: 10,
     roleName: ''
@@ -258,7 +258,7 @@
       draggable: true
     })
       .then(() => {
-        userApi.reqDeleteRole(data.roleId).then((res: CommonResponse) => {
+        userApi.reqDeleteRole(data.roleId as number).then((res: CommonResponse) => {
           if (res.code === 200) {
             queryRoleList()
           }
@@ -290,7 +290,7 @@
       // 这里也可以使用.then
       try {
         if (isChangeFlge.value) {
-          await userApi.reqUpdateRole(formData.roleId, formData)
+          await userApi.reqUpdateRole(formData.roleId as number, formData)
         } else {
           await userApi.reqAddRole(formData)
         }
@@ -305,7 +305,7 @@
   }
   // 权限分配弹框打开
   const setAuth = async (data: RoleDataTS) => {
-    roleId.value = data.roleId
+    roleId.value = data.roleId as number
     try {
       await queryMenuList() // 先加载数据
       menuIdList.value = data.menuIdList || []
@@ -334,7 +334,7 @@
       return
     }
     userApi
-      .reqUpdateRole(roleId.value, { menuIdList: chooseData, roleId: roleId.value })
+      .reqUpdateRole(roleId.value as number, { menuIdList: chooseData, roleId: roleId.value })
       .then((res: CommonResponse) => {
         if (res.code === 200) {
           ElMessage.success('权限分配成功')

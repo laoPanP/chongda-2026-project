@@ -54,7 +54,7 @@ export const queryAttrList = (params: queryAttrParams) =>
   request.get<queryAttrParams, AttrListResponse>(API.ATTR_LIST, { params })
 
 // 属性删除
-export const reqDeleteAttr = (id: number) => request.delete<any, CommonResponse>(`${API.ATTR_Delete}${id}`)
+export const reqDeleteAttr = (id: any) => request.delete<any, CommonResponse>(`${API.ATTR_Delete}${id}`)
 // 属性修改
 export const reqUpdateAttr = (id: number, data: attrList) =>
   request.put<attrList, attrAddResponse>(`${API.ATTR_UPDATE}/${id}`, data)

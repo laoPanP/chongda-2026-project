@@ -20,6 +20,7 @@ nprogress.configure({
 let userStore = useUserStore(pinia)
 
 //全局前置守卫
+// @ts-ignore
 router.beforeEach(async (to: any, from: any, next: any) => {
   // 访问路由前触发
   // to:要访问的路由
@@ -44,23 +45,41 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   try {
     // 3.1 确保权限已加载
     if (!userStore.userInfo.username || !userStore.menuRoutes.length) {
-      await userStore.getUserInfo()
-      return next({ ...to })
+      try {
+        await userStore.getUserInfo()
+        // 3.2 登录后访问/login则跳首页
+        if (to.path === '/login') {
+          return next('/')
+        }
+        // 3.3 权限校验
+        if (!hasPermission(to.name, userStore.menuRoutes)) {
+          await ElMessageBox.confirm('您没有访问该页面的权限', '温馨提示', {
+            confirmButtonText: '返回首页',
+            showCancelButton: false, // 隐藏取消按钮
+            type: 'warning'
+          })
+          return next('/') // 强制跳转
+        }
+        return next({ ...to }) // 重试当前导航
+      } catch (error) {
+        return next('/login')
+      }
+    } else {
+      // 3.2 登录后访问/login则跳首页
+      if (to.path === '/login') {
+        return next('/')
+      }
+      // 3.3 权限校验
+      if (!hasPermission(to.name, userStore.menuRoutes)) {
+        await ElMessageBox.confirm('您没有访问该页面的权限', '温馨提示', {
+          confirmButtonText: '返回首页',
+          showCancelButton: false, // 隐藏取消按钮
+          type: 'warning'
+        })
+        return next('/') // 强制跳转
+      }
+      next()
     }
-    // 3.2 登录后访问/login则跳首页
-    if (to.path === '/login') {
-      return next('/')
-    }
-    // 3.3 权限校验
-    if (!hasPermission(to.name, userStore.menuRoutes)) {
-      await ElMessageBox.confirm('您没有访问该页面的权限', '温馨提示', {
-        confirmButtonText: '返回首页',
-        showCancelButton: false, // 隐藏取消按钮
-        type: 'warning'
-      })
-      return next('/') // 强制跳转
-    }
-    next()
     // 3.4 正常放行
   } catch (error) {
     //token过期 | 用户手动修改本地token
@@ -83,6 +102,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   }
 })
 //全局后置守卫
+// @ts-ignore
 router.afterEach((to: any, from: any) => {
   nprogress.done()
 })

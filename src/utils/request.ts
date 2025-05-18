@@ -19,6 +19,7 @@ request.interceptors.request.use(
     return config
   },
   (err) => {
+    console.log(err)
     //温馨提示：这里错误信息，打印在控制台
     return Promise.reject(new Error('fail'))
   }

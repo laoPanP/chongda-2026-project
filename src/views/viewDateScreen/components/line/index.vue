@@ -37,7 +37,7 @@
       yAxis: {
         type: 'value',
         min: 0,
-        max: function (value) {
+        max: function (value: any) {
           // 动态计算最大值，比数据最大值多20%空间
           return Math.ceil(value.max * 1.2)
         },
@@ -61,7 +61,7 @@
         },
         axisLabel: {
           color: '#666', // 标签颜色
-          formatter: function (value) {
+          formatter: function (value: any) {
             // 格式化Y轴标签
             if (value >= 1000) {
               return value / 1000 + 'k'

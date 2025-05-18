@@ -36,11 +36,6 @@
   import useUserStore from '@/store/modules/user'
   import { useRouter, useRoute } from 'vue-router'
   import { ElNotification } from 'element-plus'
-  // 引入清除动态路由的方法
-  import { hasPermission } from '@/utils/clearRoute/clearRoute'
-  //获取全部动态路由
-  import { asyncRoute } from '@/router/route.ts'
-  import router from '@/router'
 
   let $router = useRouter()
   let $route = useRoute()

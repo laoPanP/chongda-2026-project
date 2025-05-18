@@ -43,7 +43,7 @@ export interface CommonResponse {
 
 // 品牌修改/新增参数
 export interface BrandModifyParams {
-  id?: number
+  id?: number | null // 允许：undefined（字段不存在）、null（显式空值）、number（数字）
   brandName: string
   description?: string
 }
@@ -64,9 +64,9 @@ export interface CategoryList {
 export interface queryAttrParams {
   pageNo: number
   pageSize: number
-  catalogId1: number | string
-  catalogId2: number | string
-  catalogId3: number | string
+  catalogId1?: number | string | null
+  catalogId2?: number | string | null
+  catalogId3?: number | string | null
 }
 // 列表查询响应
 export interface attributeValueList {
@@ -74,12 +74,12 @@ export interface attributeValueList {
   color: string
 }
 export interface attrList {
-  id: number | string
-  catalogId1: number | string
+  id?: number | null | string
+  catalogId1: number | string | null
   catalog1Name?: string
-  catalogId2: number | string
+  catalogId2: number | string | null
   catalog2Name?: string
-  catalogId3: number | string
+  catalogId3: number | string | null
   catalog3Name?: string
   attributeName: string
   attributeValueList: attributeValueList[]

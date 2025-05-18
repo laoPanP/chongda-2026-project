@@ -4,32 +4,17 @@
       <el-form inline="true" ref="ruleFormRef" :model="queryForm">
         <el-form-item label="一级分类" prop="catalogId1">
           <el-select v-model="queryForm.catalogId1" placeholder="请选择" @change="chooseCatalog1">
-            <el-option
-              v-for="(item, index) in catalogData.catalogList1"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
+            <el-option v-for="item in catalogData.catalogList1" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="二级分类" prop="catalogId2">
           <el-select v-model="queryForm.catalogId2" placeholder="请选择" @change="chooseCatalog2">
-            <el-option
-              v-for="(item, index) in catalogData.catalogList2"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
+            <el-option v-for="item in catalogData.catalogList2" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="三级分类" prop="catalogId3">
           <el-select v-model="queryForm.catalogId3" placeholder="请选择">
-            <el-option
-              v-for="(item, index) in catalogData.catalogList3"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
+            <el-option v-for="item in catalogData.catalogList3" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item class="form-actions">
@@ -44,7 +29,7 @@
       </el-button>
       <div class="mt16">
         <el-table :data="tableData" border stripe style="width: 100%">
-          <template v-for="(item, index) in columns" :key="item.key || item.type">
+          <template v-for="item in columns" :key="item.key || item.type">
             <el-table-column
               :type="item.type"
               :width="item.width"
@@ -114,7 +99,7 @@
             <el-form-item label="一级分类" prop="catalogId1">
               <el-select v-model="formData.catalogId1" placeholder="请选择" @change="modalChooseCatalog1">
                 <el-option
-                  v-for="(item, index) in moadlCatalogData.catalogList1"
+                  v-for="item in moadlCatalogData.catalogList1"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -124,7 +109,7 @@
             <el-form-item label="二级分类" prop="catalogId2">
               <el-select v-model="formData.catalogId2" placeholder="请选择" @change="modalChooseCatalog2">
                 <el-option
-                  v-for="(item, index) in moadlCatalogData.catalogList2"
+                  v-for="item in moadlCatalogData.catalogList2"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -134,7 +119,7 @@
             <el-form-item label="三级分类" prop="catalogId3">
               <el-select v-model="formData.catalogId3" placeholder="请选择" @change="modalChooseCatalog3">
                 <el-option
-                  v-for="(item, index) in moadlCatalogData.catalogList3"
+                  v-for="item in moadlCatalogData.catalogList3"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -150,17 +135,17 @@
             <el-table :data="valueData" border stripe style="width: 100%">
               <el-table-column type="index" width="50" algin="center" />
               <el-table-column algin="center" label="属性值名称" width="160">
-                <template #="{ row, $index }">
+                <template #="{ row }">
                   <el-input v-model="row.value" placeholder="请输入属性值名称" clearable />
                 </template>
               </el-table-column>
               <el-table-column algin="center" label="颜色" minWidth="160">
-                <template #="{ row, $index }">
+                <template #="{ row }">
                   <el-color-picker v-model="row.color" />
                 </template>
               </el-table-column>
               <el-table-column algin="center" label="操作" width="120">
-                <template #="{ row, $index }">
+                <template #="{ $index }">
                   <el-button type="danger" icon="Delete" @click.stop="deleteValue($index)">删除</el-button>
                 </template>
               </el-table-column>
@@ -395,7 +380,7 @@
   }
   // 表单数据
   const formData = reactive({
-    id: null,
+    id: 0,
     catalogId1: null,
     catalogId1Name: '',
     catalogId2: null,
@@ -423,7 +408,7 @@
   watch(dialogVisible, (isOpen) => {
     if (!isOpen) {
       // 弹框关闭时重置表单
-      formData.id = null
+      formData.id = 0
       formData.catalogId1 = null
       formData.catalogId1Name = ''
       formData.catalogId2 = null

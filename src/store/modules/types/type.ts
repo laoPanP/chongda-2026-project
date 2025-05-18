@@ -2,6 +2,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 export interface UserState {
   token: string | null
-  userInfo: Object | null
+  userInfo: any
   menuRoutes: RouteRecordRaw[]
 }

@@ -3,15 +3,8 @@
     <el-card>
       <div class="mt16">
         <el-table :data="tableData" border stripe style="width: 100%" row-key="id">
-          <template v-for="(item, index) in columns" :key="item.key || item.type">
-            <el-table-column
-              :type="item.type"
-              :width="item.width"
-              :label="item.label"
-              :min-width="item.minWidth"
-              :align="item.align"
-              :prop="item.key"
-            >
+          <template v-for="item in columns" :key="item.key || item.type">
+            <el-table-column :label="item.label" :min-width="item.minWidth" :align="item.align" :prop="item.key">
               <template #default="{ row }" v-if="item.key === 'brandLogo'">
                 <el-image :src="row.brandLogo" style="width: 60px; height: 60px" />
               </template>

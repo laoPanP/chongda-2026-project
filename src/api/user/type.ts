@@ -14,7 +14,7 @@ export interface LoginResponseData {
 export interface userInfo {
   userId: number
   avatar: string
-  username: string
+  username?: string
   password?: string
   desc: string
   roles: string[]
@@ -45,14 +45,14 @@ export interface queryData {
 //用户新增、修改入参类型
 export interface UserAddParams {
   username: string
-  userId?: number
+  userId?: number | null
   password: string
   desc: string
 }
 //角色分配传入类型
 export interface UserAllocationParams {
-  userId: number
-  roleCodes: string[]
+  userId?: number | null
+  roleCodes: string[] // 明确允许数组元素为 undefined
   roles: string[]
   username?: string
 }
@@ -66,10 +66,10 @@ export interface QueryRoleData {
 }
 // 角色数据基础类型
 export interface RoleDataTS {
-  roleId?: number
+  roleId?: number | null
   roleCode?: string
   roleName?: string
-  menuIdList: number[]
+  menuIdList?: number[]
   description?: string
   createTime?: string
   updateTime?: string
@@ -103,4 +103,9 @@ export interface MenuInfo {
   code: string
   type: number
   level: number
+}
+export interface RoleQueryData {
+  pageNo: number
+  pageSize: number
+  roleName?: string
 }

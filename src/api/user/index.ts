@@ -11,7 +11,6 @@ import type {
   QueryRoleData,
   RoleDataTS,
   MenuResponse,
-  MenuData,
   MenuInfo
 } from './type'
 import type { PaginationResponseData, CommonResponse } from '../commonType'

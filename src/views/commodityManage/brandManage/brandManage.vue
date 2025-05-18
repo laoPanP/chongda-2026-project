@@ -6,7 +6,7 @@
       </el-button>
       <div class="mt16">
         <el-table :data="tableData" border stripe style="width: 100%">
-          <template v-for="(item, index) in columns" :key="item.key || item.type">
+          <template v-for="item in columns" :key="item.key || item.type">
             <el-table-column
               :type="item.type"
               :width="item.width"

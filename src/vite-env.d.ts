@@ -5,3 +5,9 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+// 声明虚拟模块
+declare module 'virtual:svg-icons-register' {
+  const component: any;
+  export default component;
+}
+declare module '@/*'

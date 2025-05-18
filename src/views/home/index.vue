@@ -5,7 +5,7 @@
         <img :src="userStore.userInfo.avatar" alt="" />
       </div>
       <div class="home_div_content ml16">
-        <div class="user_name_class">{{ getTime() }}{{ userStore.userInfo.username || '' }}</div>
+        <div class="user_name_class">{{ getTime() }}{{ userStore.userInfo?.username || '' }}</div>
         <div class="platform_name">{{ setting.title || '平台名称' }}</div>
       </div>
     </div>

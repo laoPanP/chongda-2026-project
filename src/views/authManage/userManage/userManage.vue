@@ -25,7 +25,7 @@
       </el-button>
       <div class="mt16">
         <el-table :data="tableData" border stripe style="width: 100%" @selection-change="getSelectionRows">
-          <template v-for="(item, index) in columns" :key="item.key || item.type">
+          <template v-for="item in columns" :key="item.key || item.type">
             <el-table-column
               :type="item.type"
               :width="item.width"
@@ -321,8 +321,8 @@
   const changeData = (row: userInfo) => {
     if (row) {
       formData.userId = row.userId
-      formData.username = row.username
-      formData.password = row.password
+      formData.username = row.username as string
+      formData.password = row.password as string
       formData.desc = row.desc
     }
     isChangeFlge.value = true
@@ -341,7 +341,7 @@
       // 这里也可以使用.then
       try {
         if (isChangeFlge.value) {
-          await userApi.reqUpdateUser(formData.userId, formData)
+          await userApi.reqUpdateUser(formData.userId as number, formData)
         } else {
           await userApi.reqAddUser(formData)
         }
@@ -360,15 +360,15 @@
       if (!valid) return
       loading.value = true
       userFormData.roles = []
-      userFormData.roleCodes.forEach((item: string) => {
+      userFormData.roleCodes.forEach((item: any) => {
         const matchedRole = rolesList.value.find((role: RoleDataTS) => role.roleCode === item)
-        if (matchedRole) {
-          userFormData.roles.push(matchedRole.roleName)
+        if (matchedRole && matchedRole.roleName) {
+          ;(userFormData.roles as string[]).push(matchedRole.roleName)
         }
       })
       // 这里也可以使用.then
       try {
-        await userApi.reqAllocationUser(userFormData.userId, userFormData)
+        await userApi.reqAllocationUser(userFormData.userId as number, userFormData)
         ElMessage.success('操作成功！')
         roleVisible.value = false
         loading.value = false
@@ -381,8 +381,8 @@
   const setRole = (data: userInfo) => {
     userFormData.userId = data.userId
     userFormData.username = data.username
-    userFormData.roleCodes = data.roleCodes
-    userFormData.roles = data.roles
+    userFormData.roleCodes = data.roleCodes as string[]
+    userFormData.roles = data.roles || []
     queryRoleList()
     roleVisible.value = true
   }
@@ -401,15 +401,20 @@
     //如果是系统管理员，则不能对系统管理员角色进行操作
     if (userFormData.userId == 1) {
       if (val) {
-        userFormData.roleCodes = val ? rolesList.value.map((item) => item.roleCode) : []
+        userFormData.roleCodes = val
+          ? rolesList.value.map((item) => item.roleCode).filter((code): code is string => code !== undefined) // 类型守卫
+          : []
       } else {
         // 返回只有 'system_manager' 的数组
         userFormData.roleCodes = rolesList.value
           .filter((item) => item.roleCode === 'system_manager')
-          .map((item) => item.roleCode) // 提取 value
+          .map((item) => item.roleCode)
+          .filter((code): code is string => code !== undefined) // 类型守卫
       }
     } else {
-      userFormData.roleCodes = val ? rolesList.value.map((item) => item.roleCode) : []
+      userFormData.roleCodes = val
+        ? rolesList.value.map((item) => item.roleCode).filter((code): code is string => code !== undefined) // 类型守卫
+        : []
     }
     isIndeterminate.value = false
   }

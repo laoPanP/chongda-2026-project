@@ -9,12 +9,7 @@
       <!-- 左侧面包屑 -->
       <div class="ml8">
         <el-breadcrumb separator-icon="ArrowRight">
-          <el-breadcrumb-item
-            v-for="(item, index) in $route.matched"
-            :key="item.path"
-            :to="item.path"
-            v-show="item.meta.title"
-          >
+          <el-breadcrumb-item v-for="item in $route.matched" :key="item.path" :to="item.path" v-show="item.meta.title">
             <el-icon style="margin: 0 2px">
               <component :is="item.meta.icon"></component>
             </el-icon>
@@ -46,7 +41,7 @@
 <script setup lang="ts" name="pageTab">
   import useLayoutStore from '@/store/modules/setting'
   import { ref, onMounted } from 'vue'
-  import { useFullscreen } from '@/utils/fullscreen/fullScreen'
+  import { useFullscreen } from '@/utils/fullScreen/fullScreen'
   import { useRoute } from 'vue-router'
   // 或者layout相关配置仓库
   let layoutStore = useLayoutStore()

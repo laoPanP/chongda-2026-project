@@ -22,8 +22,8 @@
 </template>
 
 <script setup lang="ts">
-  import 'echarts-liquidfill'
   import * as echarts from 'echarts'
+  import 'echarts-liquidfill'
   import { ref, onMounted } from 'vue'
   let people = ref('215908人')
 

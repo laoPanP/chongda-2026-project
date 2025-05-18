@@ -2,15 +2,13 @@
 import { defineStore } from 'pinia'
 import { reqLogin, reqUserInfo, reqLogout } from '@/api/user'
 // 引入数据类型
-import type { loginForm, LoginResponseData, UserInfoResponseData } from '@/api/user/type'
+import type { loginForm, LoginResponseData } from '@/api/user/type'
 import type { UserState } from './types/type'
 //引入操作本地存储的工具方法
 import { SET_TOKEN, GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 //引入路由
 import { constantRoute, asyncRoute, anyRoute } from '@/router/route.ts'
 import router from '@/router'
-// 引入清除动态路由的方法
-import { resetRouter } from '@/utils/clearRoute/clearRoute'
 //引入深拷贝
 //@ts-ignore
 import cloneDeep from 'lodash/cloneDeep'
@@ -26,7 +24,6 @@ function filterAsyncRoute(asyncRoute: any, routes: any) {
     }
   })
 }
-
 // 创建用户仓库
 let useUserStore = defineStore('User', {
   //存储数据
@@ -59,10 +56,16 @@ let useUserStore = defineStore('User', {
         let userRoute = filterAsyncRoute(cloneDeep(asyncRoute), result.data.routes)
         this.menuRoutes = [...constantRoute, ...anyRoute, ...userRoute]
         // 路由追加过滤得到的路由及任意路由
-        let routerList = [...anyRoute, ...userRoute]
-        routerList.forEach((item: any) => {
-          router.addRoute(item)
-        })
+        // 同步添加路由（不再需要Promise.all）
+        const addRoutesSync = (routes: any[]) => {
+          routes.forEach((route) => {
+            if (!router.hasRoute(route.name)) {
+              router.addRoute(route)
+              if (route.children) addRoutesSync(route.children)
+            }
+          })
+        }
+        addRoutesSync([...anyRoute, ...userRoute])
         return 'ok'
       } else {
         return Promise.reject(new Error(result.message))
@@ -86,7 +89,7 @@ let useUserStore = defineStore('User', {
       this.token = token
       SET_TOKEN(token)
     },
-    setUserInfo(userInfo: UserInfoResponseData) {
+    setUserInfo(userInfo: any) {
       delete userInfo.token
       delete userInfo.password
       this.userInfo = userInfo

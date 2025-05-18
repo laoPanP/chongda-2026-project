@@ -2,7 +2,7 @@
   <div class="layout_menu">
     <div
       :class="{ layout_menu_item: true, layout_menu_item_choose: item.code == chooseActive }"
-      v-for="(item, index) in menuList"
+      v-for="item in menuList"
       :key="item.code"
     >
       <div class="layout_menu_item_content" @click="goRoute(item)">
