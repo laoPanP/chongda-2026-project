@@ -11,14 +11,20 @@
     </div>
   </el-card>
   <el-card class="mt16">
-    <div class="home_content_page">
-      <img src="@/assets/icons/logo.svg" alt="" />
+    <div class="card_content">
+      <my-component height="100%" width="50%" borderColor="#409eff" :isTitle="false">
+        <div class="home_content_page">
+          <img src="@/assets/icons/logo.svg" alt="" />
+        </div>
+      </my-component>
     </div>
   </el-card>
 </template>
 
 <script setup lang="ts" name="home">
   import useUserStore from '@/store/modules/user'
+  import { MyComponent } from 'my-vue3-component-pxx'
+  import 'my-vue3-component-pxx/dist/my-vue3-component-pxx.css'
   import setting from '@/setting'
   let userStore = useUserStore()
   const getTime = () => {
@@ -67,6 +73,11 @@
         opacity: 0.5;
       }
     }
+  }
+  .card_content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .home_content_page {
     min-height: 700px;
