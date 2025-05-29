@@ -1,5 +1,6 @@
-// 配置开发服务器、构建行为、插件等，影响整个项目的开发和打包流程。
+/// <reference types="vitest/config" />
 import { defineConfig, loadEnv } from 'vite'
+// 配置开发服务器、构建行为、插件等，影响整个项目的开发和打包流程。
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -30,6 +31,23 @@ export default defineConfig(({ mode }) => {
         logger: true // 是否显示请求日志
       })
     ],
+    test: {
+      // 启用类似 Jest 的全局 API
+      globals: true,
+      // 使用 happy-dom 模拟 DOM
+      environment: 'happy-dom',
+      // 支持 TS
+      typecheck: {
+        // ✅ 修正为对象格式
+        enabled: true,
+        checker: 'tsc'
+      },
+      // 测试覆盖率
+      coverage: {
+        provider: 'v8', // 或 'istanbul'
+        reporter: ['text', 'json', 'html']
+      }
+    },
     resolve: {
       alias: {
         // '@': path.resolve(__dirname, './src') //基于 文件所在目录（__dirname）解析路径，静态固定，不依赖运行时环境
