@@ -31,6 +31,9 @@
   defineOptions({
     name: 'login'
   })
+  defineExpose({
+    getFormRef: () => loginFormItem.value
+  })
   import { User, Lock } from '@element-plus/icons-vue'
   import { reactive, ref } from 'vue'
   import useUserStore from '@/store/modules/user'

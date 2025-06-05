@@ -1,10 +1,30 @@
 import { mount } from '@vue/test-utils'
 import Login from './index.vue'
 import { describe, expect, test, vi, beforeEach } from 'vitest'
-import { ElNotification } from 'element-plus'
+import { ElNotification, ElInput, ElForm } from 'element-plus'
 import ElementPlus from 'element-plus'
 import useUserStore from '@/store/modules/user'
 import { useRouter, useRoute } from 'vue-router'
+// 全局注册 Element Plus 组件
+// 测试读取的组件是ElButton这样的，而源码可以使用el-
+import { config } from '@vue/test-utils'
+config.global.plugins = [ElementPlus]
+
+// 单元测试内容：
+// 一、组件测试：
+// 1. 渲染测试：验证组件是否能正确渲染（slot,v-if/v-show）
+// 2. Props测试：测试组件接收props后的行为、测试默认props值、测试props验证逻辑
+// 3. 事件测试：测试组件是否触发了正确的事件、测试事件携带的数据是否正确
+// 4. 用户交互测试：测试点击、输入等用户交互后的组件行为、测试表单组件的双向绑定
+// 二、组合式API测试：
+// 1. Composable函数测试：测试自定义hook / composable函数的返回值、测试响应式数据的更新、测试副作用(如watch、生命周期钩子)
+// 2. Pinia / Vuex Store测试：测试state、getters、actions / mutations、测试store模块间的交互
+// 三、工具函数测试：
+// 测试纯工具函数(无副作用的函数)、测试数据处理逻辑、测试验证函数
+// 四、路由测试
+// 测试导航守卫、测试路由匹配、测试路由参数处理
+// 五、API调用测试
+// 测试API请求函数、测试错误处理、使用mock模拟API响应
 
 // 模拟Vue Router
 vi.mock('vue-router', () => ({
@@ -63,16 +83,24 @@ describe('Login.vue', () => {
   describe('表单验证', () => {
     test('用户名验证', async () => {
       const wrapper = mount(Login, {
-        global: {
-          plugins: [ElementPlus]
-        }
+        attachTo: document.body // 重要：让组件挂载到真实DOM
       })
-      const usernameInput = wrapper.find('input[type="text"]')
-
-      // 测试必填
-      await usernameInput.setValue('')
-      await wrapper.find('form').trigger('submit')
-      // expect(wrapper.find('.el-form-item__error').text()).toBe('请输入用户名')
+      // expect(wrapper.vm.rules.username).toContainEqual({ required: true, message: '请输入用户名', trigger: 'blur' })
+      const formRef = wrapper.vm.getFormRef()
+      const allInputs = wrapper.findAllComponents(ElInput) // 返回数组
+      await allInputs[0].setValue('') // 用户名输入框
+      await allInputs[0].trigger('blur') // 确保触发 v-model
+      await allInputs[1].setValue('') // 密码输入框
+      // 触发验证（如 blur 事件）
+      await allInputs[1].trigger('blur')
+      await wrapper.vm.$nextTick() // 等待 DOM 更新
+      await wrapper.vm.$forceUpdate()
+      await new Promise((resolve) => setTimeout(resolve, 2000)) // 比1000ms更合理
+      const validateResult = await formRef.validate().catch((e: any) => e)
+      console.log('2', validateResult)
+      // console.log('2', wrapper.vm.loginForm.username) // 检查数据层是否更新
+      // console.log('3', wrapper.vm.loginForm.password) // 检查数据层是否更新
+      expect(wrapper.find('.el-form-item__error').text()).toContain('请输入用户名')
 
       // 测试长度过短
       // await usernameInput.setValue('ab')
