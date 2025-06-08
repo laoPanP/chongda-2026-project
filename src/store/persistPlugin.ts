@@ -1,3 +1,4 @@
+// pinia持久化插件-已上传npm 这个文件已废弃
 interface PersistPluginOptions {
   key?: string // 自定义存储键名前缀
   stores?: string[] // 指定需要持久化的 store（白名单）
