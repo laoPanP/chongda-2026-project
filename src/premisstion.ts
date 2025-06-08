@@ -17,7 +17,6 @@ import { hasPermission } from '@/utils/clearRoute/clearRoute'
 nprogress.configure({
   showSpinner: false
 })
-let userStore = useUserStore(pinia)
 
 //全局前置守卫
 // @ts-ignore
@@ -28,6 +27,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   // next：路由放行函数
   document.title = `${setting.title} - ${to.meta.title}`
   nprogress.start()
+  let userStore = useUserStore(pinia)
 
   const token = userStore.token
 
