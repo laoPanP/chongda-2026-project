@@ -24,20 +24,23 @@
 
   //存储当前时间
   let time = ref(moment().format('YYYY年MM月DD日 hh:mm:ss'))
-  let timer = ref(0)
+  let timer = ref<number | null>(null) // 如果是浏览器环境
   //按钮的点击回调
   const goHome = () => {
     $router.push('/home')
   }
   //组件挂载完毕更新当前的事件
   onMounted(() => {
-    timer.value = setInterval(() => {
+    timer.value = window.setInterval(() => {
       time.value = moment().format('YYYY年MM月DD日 hh:mm:ss')
     }, 1000)
   })
 
   onBeforeUnmount(() => {
-    clearInterval(timer.value)
+    if (timer.value) {
+      clearInterval(timer.value)
+      timer.value = null
+    }
   })
 </script>
 

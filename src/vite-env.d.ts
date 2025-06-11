@@ -10,4 +10,6 @@ declare module 'virtual:svg-icons-register' {
   const component: any;
   export default component;
 }
+// 暂时不校验 自己开发的组件
+declare module 'my-vue3-component-pxx';
 declare module '@/*'

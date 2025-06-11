@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import Login from './index.vue'
 import { describe, expect, test, vi, beforeEach } from 'vitest'
-import { ElNotification, ElInput, ElForm } from 'element-plus'
+import { ElNotification, ElInput } from 'element-plus'
 import ElementPlus from 'element-plus'
 import useUserStore from '@/store/modules/user'
 import { useRouter, useRoute } from 'vue-router'

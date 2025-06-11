@@ -31,6 +31,22 @@ export default defineConfig(({ mode }) => {
         logger: true // 是否显示请求日志
       })
     ],
+    build: {
+      //vite打包优化 手动分包，把对应库放到对应包里面
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vue: ['vue', 'vue-router', 'pinia'],
+            axios: ['axios'],
+            echarts: ['echarts'],
+            lodash: ['lodash'],
+            element: ['element-plus'],
+            moment: ['moment'],
+            nprogress: ['nprogress']
+          } as Record<string, string[]>
+        }
+      }
+    },
     test: {
       // 启用类似 Jest 的全局 API
       globals: true,
