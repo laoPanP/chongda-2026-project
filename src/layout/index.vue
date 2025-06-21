@@ -11,7 +11,7 @@
           v-for="item in menuItems"
           :key="item.name"
           :class="{ active: activeMenu === item.name }"
-          @click="handleMenuClick(item)"
+          @click.prevent="handleMenuClick(item)"
         >
           {{ item.title
           }}<el-icon class="ml4" v-if="item.isSelect" size="12"
@@ -49,13 +49,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// 获取路由对象
-import pageView from './pageView/index.vue'
-// 获取用户菜单数据
+import { useRouter } from 'vue-router'
 
-const activeMenu = ref('home')
-const menuItems = ref([
-  { name: 'schedule', title: '大会日程', isSelect: false },
+import pageView from './pageView/index.vue'
+import { reactive } from 'vue'
+
+const router = useRouter()
+
+let activeMenu = ref('home')
+const menuItems = reactive([
+  { name: 'home', title: '大会日程', isSelect: false },
   { name: 'steering', title: '指导委员会', isSelect: false },
   { name: 'executive', title: '执行委员会', isSelect: false },
   { name: 'guide', title: '参会指南', isSelect: false },
@@ -89,7 +92,12 @@ let isShow = ref(false)
 
 const handleMenuClick = (item: any) => {
   activeMenu.value = item.name
-  isShow.value = !isShow.value
+  if (item.name != 'past') {
+    isShow.value = false
+    router.push({ name: item.name })
+  } else {
+    isShow.value = !isShow.value
+  }
 }
 </script>
 
@@ -166,10 +174,6 @@ const handleMenuClick = (item: any) => {
         background-color: $base-menu-color;
         .layout_page_view_content {
           overflow: auto;
-          max-height: calc(100% - 32px);
-          padding: 16px;
-          border-radius: 8px;
-          width: calc(100% - 32px);
           height: 100%;
           background-color: $base-page-color;
         }
