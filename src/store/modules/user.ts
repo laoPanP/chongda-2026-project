@@ -31,7 +31,7 @@ let useUserStore = defineStore('User', {
     return {
       token: GET_TOKEN(),
       userInfo: {}, //用户信息存储在缓存，但是不进行持久化操作
-      menuRoutes: constantRoute //存储菜单数据
+      menuRoutes: constantRoute, //存储菜单数据
     }
   },
   //异步|逻辑
@@ -53,7 +53,10 @@ let useUserStore = defineStore('User', {
       let result = await reqUserInfo()
       if (result.code == 200) {
         this.setUserInfo(result.data)
-        let userRoute = filterAsyncRoute(cloneDeep(asyncRoute), result.data.routes)
+        let userRoute = filterAsyncRoute(
+          cloneDeep(asyncRoute),
+          result.data.routes,
+        )
         this.menuRoutes = [...constantRoute, ...anyRoute, ...userRoute]
         // 路由追加过滤得到的路由及任意路由
         // 同步添加路由（不再需要Promise.all）
@@ -94,8 +97,8 @@ let useUserStore = defineStore('User', {
       delete userInfo.password
       this.userInfo = userInfo
       localStorage.setItem('userInfo', JSON.stringify(userInfo))
-    }
+    },
   },
-  getters: {}
+  getters: {},
 })
 export default useUserStore

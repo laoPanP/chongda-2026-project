@@ -2,37 +2,40 @@
   <div class="layout_container">
     <!-- 顶部导航 -->
     <div class="layout_tabber">
-      <div class="layout_left">
-        <logoTitle></logoTitle>
+      <div class="logo mr8">
+        <img src="@/assets/images/cecc-logo-2022-2.png" alt="logo" />
       </div>
-      <div class="layout_right">
-        <!-- 顶部一级菜单 -->
-        <div class="layout_firstTitle">
-          <first-menu></first-menu>
-        </div>
-        <!-- 顶部用户信息 -->
-        <div class="layout_userInfo">
-          <userInfoTab></userInfoTab>
-        </div>
-      </div>
+      <nav class="top-navigation">
+        <a
+          href="#"
+          v-for="item in menuItems"
+          :key="item.name"
+          :class="{ active: activeMenu === item.name }"
+          @click="handleMenuClick(item)"
+        >
+          {{ item.title
+          }}<el-icon class="ml4" v-if="item.isSelect" size="12"
+            ><CaretBottom
+          /></el-icon>
+          <!-- 下拉展示内容 -->
+          <div
+            class="selectInfo"
+            v-if="activeMenu == item.name && item.isSelect && isShow"
+          >
+            <div
+              class="selectItem mb8"
+              v-for="(item1, index) in item.children"
+              :key="index"
+            >
+              {{ item1.name }}
+            </div>
+          </div>
+        </a>
+      </nav>
     </div>
     <!-- 主要内容展示区域 -->
     <div class="layout_content">
-      <!-- 左侧菜单 -->
-      <div class="layout_slider" :class="{ collapse_class: layoutStore.collapse ? true : false }">
-        <el-scrollbar class="layout_slider_scrollbar">
-          <el-menu :collapse="layoutStore.collapse" :default-active="$route.path">
-            <!-- 动态生成菜单 -->
-            <Menu :menuList="userStore.menuRoutes"></Menu>
-          </el-menu>
-        </el-scrollbar>
-      </div>
-      <!-- 内容展示区域 -->
       <div class="layout_main">
-        <!-- 内容顶部导航栏 -->
-        <div class="layout_page_tab">
-          <pageTab></pageTab>
-        </div>
         <!-- 页面展示区域 -->
         <div class="layout_page_view">
           <div class="layout_page_view_content">
@@ -45,99 +48,133 @@
 </template>
 
 <script setup lang="ts">
-  // 获取路由对象
-  import { useRoute } from 'vue-router'
-  import logoTitle from './logoTitle/index.vue'
-  import firstMenu from './firstMenu/index.vue'
-  import Menu from './Menu/index.vue'
-  import pageView from './pageView/index.vue'
-  import pageTab from './pageTab/index.vue'
-  import userInfoTab from './userInfoTab/index.vue'
-  // 获取用户菜单数据
-  import useUserStore from '@/store/modules/user'
-  import useLayoutStore from '@/store/modules/setting'
-  let userStore = useUserStore()
-  // 或者layout相关配置仓库
-  let layoutStore = useLayoutStore()
-  let $route = useRoute()
+import { ref } from 'vue'
+// 获取路由对象
+import pageView from './pageView/index.vue'
+// 获取用户菜单数据
+
+const activeMenu = ref('home')
+const menuItems = ref([
+  { name: 'schedule', title: '大会日程', isSelect: false },
+  { name: 'steering', title: '指导委员会', isSelect: false },
+  { name: 'executive', title: '执行委员会', isSelect: false },
+  { name: 'guide', title: '参会指南', isSelect: false },
+  { name: 'partners', title: '合作单位', isSelect: false },
+  { name: 'media', title: '大会报道', isSelect: false },
+  {
+    name: 'past',
+    title: '往期回顾',
+    isSelect: true,
+    children: [
+      {
+        name: '2025',
+        toUrl: '',
+      },
+      {
+        name: '2024',
+        toUrl: '',
+      },
+      {
+        name: '2023',
+        toUrl: '',
+      },
+      {
+        name: '2022',
+        toUrl: '',
+      },
+    ],
+  },
+])
+let isShow = ref(false)
+
+const handleMenuClick = (item: any) => {
+  activeMenu.value = item.name
+  isShow.value = !isShow.value
+}
 </script>
 
 <style scoped lang="scss">
-  .layout_container {
+.layout_container {
+  width: 100%;
+  height: 100vh;
+  background-color: $base-page-color;
+  .layout_tabber {
+    position: fixed;
+    left: 0;
+    top: 0;
     width: 100%;
-    height: 100vh;
-    background-color: $base-page-color;
-    .layout_tabber {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: $base-header-height;
-      background-color: $primary-color;
-      // background: linear-gradient(45deg, $primary-color 0%, rgb(253, 225.6, 225.6) 100%); /* 水平渐变 */
-      display: flex;
-      .layout_left {
-        width: $base-menu-width;
-      }
-      .layout_right {
-        flex: 1;
-        display: flex;
-        justify-content: space-between;
-        .layout_firstTitle {
-          width: 80%;
-          height: 100%;
-        }
-        .layout_userInfo {
-          width: 20%;
-          height: 100%;
-        }
-      }
+    height: $base-header-height;
+    background-color: #021a5b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 50px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    .logo img {
+      height: 56px;
     }
-    .layout_content {
-      display: flex;
-      padding-top: $base-header-height;
-      width: 100%;
-      height: calc(100vh - $base-header-height);
-      .layout_slider {
-        height: 100%;
-        width: $base-menu-width;
-        background-color: $base-menu-color;
-        transition: all 0.3s;
-        .layout_slider_scrollbar {
-          width: 100%;
-          height: 100%;
-        }
-        .el-menu {
-          border-right: none !important;
-          background-color: transparent;
-        }
-        &.collapse_class {
-          width: $base-menu-minWidth;
-        }
-      }
+    .top-navigation a {
+      position: relative;
+      color: white;
+      text-decoration: none;
+      padding: 0 22px;
+      font-size: 16px;
+      font-weight: bold;
+      padding-bottom: 16px;
+      transition: color 0.3s, border-bottom-color 0.3s;
+      border-bottom: 3px solid transparent;
 
-      .layout_main {
-        flex: 1;
-        .layout_page_tab {
-          background-color: $base-menu-color;
-          height: $base_pageTab-height;
-          box-shadow: 5px 0 10px 1px rgba(0, 0, 0, 0.3);
-        }
-        .layout_page_view {
-          height: calc(100vh - $base-header-height - $base_pageTab-height);
-          width: 100%;
-          background-color: $base-menu-color;
-          .layout_page_view_content {
-            overflow: auto;
-            max-height: calc(100% - 32px);
-            padding: 16px;
-            border-radius: 8px;
-            width: calc(100% - 32px);
-            height: 100%;
-            background-color: $base-page-color;
+      &.active,
+      &:hover {
+        color: #fff;
+        border-bottom-color: rgba(255, 255, 255, 0.6);
+      }
+      .selectInfo {
+        position: absolute;
+        top: 65px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        border-radius: 4px;
+        .selectItem {
+          background-image: url(../assets/images/ts_but_2022.png);
+          width: 145px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: opacity 0.3s;
+          border-radius: 4px;
+          &:hover {
+            opacity: 0.8;
           }
         }
       }
     }
   }
+  .layout_content {
+    display: flex;
+    padding-top: $base-header-height;
+    width: 100%;
+    height: calc(100vh - $base-header-height);
+    .layout_main {
+      width: 100%;
+      .layout_page_view {
+        height: calc(100vh - $base-header-height);
+        width: 100%;
+        background-color: $base-menu-color;
+        .layout_page_view_content {
+          overflow: auto;
+          max-height: calc(100% - 32px);
+          padding: 16px;
+          border-radius: 8px;
+          width: calc(100% - 32px);
+          height: 100%;
+          background-color: $base-page-color;
+        }
+      }
+    }
+  }
+}
 </style>

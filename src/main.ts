@@ -16,7 +16,7 @@ import pinia from './store'
 // 获取应用实例对象
 const app = createApp(App)
 app.use(ElementPlus, {
-  locale: zhCn
+  locale: zhCn,
 })
 //svg插件需要的配置代码
 import 'virtual:svg-icons-register'
@@ -34,9 +34,9 @@ app.use(pinia)
 // 引入模板全局样式
 import '@/styles/index.scss'
 // 引入路由鉴权文件
-import '@/premisstion.ts'
+// import '@/premisstion.ts' //去掉路由权限校验拦截
 //引入自定义指令文件
-import { isHasButton } from '@/directive/isButton.ts'
-isHasButton(app)
+// import { isHasButton } from '@/directive/isButton.ts'
+// isHasButton(app)
 //将应用挂载到挂载点上
 app.mount('#app')
