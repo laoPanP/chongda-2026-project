@@ -7,7 +7,7 @@ export const constantRoute = [
     meta: {
       title: '', //菜单标题
       hidden: false, //是否隐藏
-      icon: ''
+      icon: '',
     },
     redirect: '/home',
     children: [
@@ -18,10 +18,10 @@ export const constantRoute = [
         meta: {
           title: '首页', //菜单标题
           hidden: false,
-          icon: 'Avatar'
-        }
-      }
-    ]
+          icon: 'Avatar',
+        },
+      },
+    ],
   },
   {
     path: '/login',
@@ -29,8 +29,8 @@ export const constantRoute = [
     name: 'login',
     meta: {
       title: '登录', //菜单标题
-      hidden: true
-    }
+      hidden: true,
+    },
   },
   {
     path: '/404',
@@ -38,9 +38,9 @@ export const constantRoute = [
     name: '404',
     meta: {
       title: '404', //菜单标题
-      hidden: true
-    }
-  }
+      hidden: true,
+    },
+  },
 ]
 // 异步路由
 export const asyncRoute = [
@@ -51,8 +51,8 @@ export const asyncRoute = [
     meta: {
       title: '数据大屏', //菜单标题
       hidden: false,
-      icon: 'Monitor'
-    }
+      icon: 'Monitor',
+    },
   },
   {
     path: '/authManage',
@@ -61,7 +61,7 @@ export const asyncRoute = [
     meta: {
       title: '权限管理', //菜单标题
       hidden: false, //是否隐藏
-      icon: 'Lock'
+      icon: 'Lock',
     },
     redirect: '/authManage/userManage',
     children: [
@@ -72,8 +72,8 @@ export const asyncRoute = [
         meta: {
           title: '用户管理', //菜单标题
           hidden: false,
-          icon: 'User'
-        }
+          icon: 'User',
+        },
       },
       {
         path: '/authManage/roleManage',
@@ -82,8 +82,8 @@ export const asyncRoute = [
         meta: {
           title: '角色管理', //菜单标题
           hidden: false,
-          icon: 'UserFilled'
-        }
+          icon: 'UserFilled',
+        },
       },
       {
         path: '/authManage/menuManage',
@@ -92,10 +92,10 @@ export const asyncRoute = [
         meta: {
           title: '菜单管理', //菜单标题
           hidden: false,
-          icon: 'HomeFilled'
-        }
-      }
-    ]
+          icon: 'HomeFilled',
+        },
+      },
+    ],
   },
   {
     path: '/commodityManage',
@@ -104,52 +104,56 @@ export const asyncRoute = [
     meta: {
       title: '商品管理', //菜单标题
       hidden: false, //是否隐藏
-      icon: 'Goods'
+      icon: 'Goods',
     },
     redirect: '/commodityManage/brandManage',
     children: [
       {
         path: '/commodityManage/brandManage',
-        component: () => import('@/views/commodityManage/brandManage/brandManage.vue'),
+        component: () =>
+          import('@/views/commodityManage/brandManage/brandManage.vue'),
         name: 'brandManage',
         meta: {
           title: '品牌管理', //菜单标题
           hidden: false,
-          icon: 'ShoppingCart'
-        }
+          icon: 'ShoppingCart',
+        },
       },
       {
         path: '/commodityManage/attrManage',
-        component: () => import('@/views/commodityManage/attrManage/attrManage.vue'),
+        component: () =>
+          import('@/views/commodityManage/attrManage/attrManage.vue'),
         name: 'attrManage',
         meta: {
           title: '属性管理', //菜单标题
           hidden: false,
-          icon: 'Message'
-        }
+          icon: 'Message',
+        },
       },
       {
         path: '/commodityManage/spuManage',
-        component: () => import('@/views/commodityManage/spuManage/spuManage.vue'),
+        component: () =>
+          import('@/views/commodityManage/spuManage/spuManage.vue'),
         name: 'spuManage',
         meta: {
           title: 'SPU管理', //菜单标题
           hidden: false,
-          icon: 'Grid'
-        }
+          icon: 'Grid',
+        },
       },
       {
         path: '/commodityManage/skuManage',
-        component: () => import('@/views/commodityManage/skuManage/skuManage.vue'),
+        component: () =>
+          import('@/views/commodityManage/skuManage/skuManage.vue'),
         name: 'skuManage',
         meta: {
           title: 'SKU管理', //菜单标题
           hidden: false,
-          icon: 'Histogram'
-        }
-      }
-    ]
-  }
+          icon: 'Histogram',
+        },
+      },
+    ],
+  },
 ]
 //任意路由 重定向到404
 export const anyRoute = [
@@ -159,9 +163,9 @@ export const anyRoute = [
     name: 'Any',
     meta: {
       title: '任意路由', //菜单标题
-      hidden: true
-    }
-  }
+      hidden: true,
+    },
+  },
 ]
 // 路由白名单
 export const whiteList = ['/login', '/404']
