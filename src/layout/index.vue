@@ -48,15 +48,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 import pageView from './pageView/index.vue'
 import { reactive } from 'vue'
 
 const router = useRouter()
+const route = useRoute()
 
 let activeMenu = ref('home')
+
+// 监听路由变化，更新activeMenu
+watch(
+  () => route.path,
+  (newPath) => {
+    // 从路径中提取菜单名称，例如从'/steering'中提取'steering'
+    const menuName = newPath.substring(1)
+    if (menuName) {
+      activeMenu.value = menuName
+    } else {
+      activeMenu.value = 'home' // 如果是根路径，默认为home
+    }
+  },
+  { immediate: true }, // 立即执行，确保刷新时能正确设置初始状态
+)
+
 const menuItems = reactive([
   { name: 'home', title: '大会日程', isSelect: false },
   { name: 'steering', title: '指导委员会', isSelect: false },
