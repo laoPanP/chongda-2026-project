@@ -20,7 +20,7 @@ import footerss from '@/views/components/footerss.vue'
 //       {
 //         time: '14:00-22:00',
 //         title: '现场签到',
-//         content: '地点：厦门国际会议中心一楼南大堂',
+//         content: '地点：厦门国际会议中心一楼南大堂1',
 //         isShowMore: false,
 //       },
 //     ],

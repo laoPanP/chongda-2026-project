@@ -12,7 +12,7 @@
         <div class="title">{{ item.title }}</div>
         <div class="user_box">
           <div
-            class="content_user_item mb20"
+            class="content_user_item mb24"
             v-for="(items, indexs) in item.userList"
             :key="indexs"
           >
@@ -104,7 +104,7 @@ const baseData = reactive([
 <style scoped lang="scss">
 .pages_content {
   display: flex;
-  min-height: calc(100vh - 95px);
+  min-height: calc(100vh - $base-header-height);
   flex-direction: column;
   .fontClass {
     font-size: 30px;
@@ -142,7 +142,7 @@ const baseData = reactive([
     }
     .blank {
       width: 100%;
-      height: 32px;
+      height: 60px;
     }
   }
 }
