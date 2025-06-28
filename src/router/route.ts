@@ -54,6 +54,14 @@ export const constantRoute = [
           title: '大会报道',
         },
       },
+      {
+        path: '/meetingSchedule',
+        component: () => import('@/views/pages/meetingSchedule.vue'),
+        name: 'meetingSchedule',
+        meta: {
+          title: '会议日程',
+        },
+      },
     ],
   },
   {

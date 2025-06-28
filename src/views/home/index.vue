@@ -1,72 +1,30 @@
 <template>
   <div class="pages_content">
     <top-bg>
-      <div class="fontClass">新时代 新格局 新成就</div>
+      <div class="fontClass">第十九届全国高校操作系统课程教学研讨会</div>
     </top-bg>
     <div class="content_box">
       <div class="content_div">
-        <!-- 顶部日期tab -->
-        <div class="date-tabs">
-          <div
-            v-for="(date, idx) in dateTabs"
-            :key="date"
-            class="date-tab"
-            :class="{ active: idx === activeDateIdx }"
-            @click="selectDate(idx)"
-          >
-            {{ date }}
-          </div>
-        </div>
-        <!-- 动态按钮 -->
-        <div v-if="tabData[activeDateIdx]?.buttons?.length" class="tab-btns">
-          <div
-            v-for="(btn, idx) in tabData[activeDateIdx].buttons"
-            :key="btn.key"
-            class="tab-btn"
-            :class="{ active: idx === activeBtnIdx }"
-            @click="selectBtn(idx)"
-          >
-            {{ btn.label }}
-          </div>
-        </div>
-        <!-- 列表 -->
-        <div class="list-box">
-          <div v-for="(item, idx) in currentList" :key="idx">
-            <div
-              class="list-row"
-              :class="{ clickable: item.right === 'expand' }"
-              @click="item.right === 'expand' ? toggleExpand(idx) : null"
-            >
-              <div class="row-left">
-                <span class="row-time">{{ item.time }}</span>
-                <span class="row-text">{{ item.text }}</span>
-              </div>
-              <div class="row-right">
-                <template v-if="item.right === 'expand'">
-                  <span class="expand-btn">
-                    <el-icon v-show="expandedIdx !== idx">
-                      <ArrowDown />
-                    </el-icon>
-                    <el-icon v-show="expandedIdx === idx">
-                      <ArrowUp />
-                    </el-icon>
-                  </span>
-                </template>
-                <template v-else-if="item.right">
-                  <span class="row-place">{{ item.right }}</span>
-                </template>
-              </div>
-            </div>
-            <!-- 展开详情，单独一行 -->
-            <transition name="expand">
-              <div
-                v-if="item.right === 'expand' && expandedIdx === idx"
-                class="row-detail"
-                :key="'detail-' + idx"
-              >
-                {{ item.detail }}
-              </div>
-            </transition>
+        <div class="conference-info">
+          <h1 class="conference-title">
+            第十九届（2025年）全国高校操作系统课程教学研讨会
+          </h1>
+          <div class="conference-content">
+            <p class="conference-intro">
+              第十九届（2025年）全国高校操作系统课程教学研讨会将于2025年7月18日-20日在新疆·阿拉尔召开。本次会议旨在把握新时代计算机教育发展脉搏，汇聚操作系统领域的国家领军人才、知名学者、一线教师及企业专家，通过特邀报告、专题研讨、教学论坛等多种形式，共同探讨操作系统课程教学改革与人才培养创新。组委会诚挚邀请您拨冗出席，共襄盛举，擘画操作系统教育新蓝图！
+            </p>
+
+            <p class="conference-focus">
+              本届会议将围绕教学质量、AI赋能、案例实践、赛教融合、实验创新和教学评价等多个关键问题开展广泛深入的研讨，充分发挥产学研协同育人优势，促进全国高校操作系统课程的教学水平进一步提升，人才培养质量进一步提升！
+            </p>
+
+            <p class="conference-significance">
+              操作系统作为计算机系统的核心基础软件与安全基石，是计算机类专业的核心基础。推动操作系统技术自主可控不仅是产业发展的迫切需求，更是国家信息安全的战略要求，需要高校、企业和社会各界通力协作。全国高校操作系统课程教学研讨会自1988年开办以来，已成功举办十八届，成为国内计算机类专业教学领域最具影响力和凝聚力的课程研讨会之一。会议始终致力于为全国高校计算机类专业教师、教学管理者及企业研发人员搭建课程教学、人才培养与科研创新的高水平交流平台。
+            </p>
+
+            <p class="conference-invitation">
+              诚邀您莅临美丽的新疆阿拉尔，分享智慧，碰撞思想，携手推动全国高校操作系统课程建设与人才培养再次上新台阶！期待与您相聚2025年盛夏！
+            </p>
           </div>
         </div>
       </div>
@@ -79,145 +37,6 @@
 <script setup lang="ts" name="executive">
 import topBg from '@/views/components/topBg.vue'
 import footerss from '@/views/components/footerss.vue'
-import { ref, computed } from 'vue'
-
-// 假数据
-const dateTabs = ref([
-  '2024-06-01',
-  '2024-06-02',
-  '2024-06-03',
-  '2024-06-04',
-  '2024-06-05',
-])
-const activeDateIdx = ref(0)
-
-// 新结构：按钮有key，list每项有key，无按钮时key为''
-const tabData = ref([
-  {
-    buttons: [
-      { label: '主题演讲', key: 'main' },
-      { label: '专题论坛', key: 'forum' },
-    ],
-    list: [
-      {
-        key: 'main',
-        time: '08:30-09:10',
-        text: '开幕式及领导致辞',
-        right: '地点：厦门国际会议中心一楼南大堂',
-      },
-      {
-        key: 'main',
-        time: '09:10-10:00',
-        text: '主旨演讲',
-        right: 'expand',
-        detail: '主旨演讲详细内容介绍，内容较长，支持平滑展开动画。',
-      },
-      { key: 'main', time: '10:00-10:30', text: '茶歇', right: '' },
-      {
-        key: 'forum',
-        time: '13:30-14:00',
-        text: '专题论坛A',
-        right: 'expand',
-        detail: '专题论坛A详细内容',
-      },
-      { key: 'forum', time: '14:00-14:30', text: '专题论坛B', right: '' },
-    ],
-  },
-  {
-    buttons: [{ label: '主题演讲', key: 'main' }],
-    list: [
-      {
-        key: 'main',
-        time: '08:30-09:10',
-        text: '分论坛A',
-        right: 'expand',
-        detail: '分论坛A详细内容',
-      },
-      { key: 'main', time: '09:10-10:00', text: '分论坛B', right: '' },
-    ],
-  },
-  {
-    buttons: [],
-    list: [{ key: '', time: '08:30-09:10', text: '自由交流', right: '' }],
-  },
-  // 2024-06-04
-  {
-    buttons: [{ label: '专题论坛', key: 'forum' }],
-    list: [
-      {
-        key: 'forum',
-        time: '09:00-09:30',
-        text: '专题论坛一',
-        right: 'expand',
-        detail: '专题论坛一详细内容介绍。',
-      },
-      {
-        key: 'forum',
-        time: '09:30-10:00',
-        text: '专题论坛二',
-        right: 'expand',
-        detail: '专题论坛二详细内容介绍。',
-      },
-    ],
-  },
-  // 2024-06-05
-  {
-    buttons: [],
-    list: [
-      {
-        key: '',
-        time: '10:00-11:00',
-        text: '闭幕式',
-        right: '地点：厦门国际会议中心三楼',
-      },
-    ],
-  },
-])
-
-const activeBtnIdx = ref(0)
-const expandedIdx = ref(-1)
-
-// 当前按钮key
-const currentBtnKey = computed(() => {
-  const btns = tabData.value[activeDateIdx.value].buttons
-  if (btns && btns.length > 0) {
-    return btns[activeBtnIdx.value]?.key
-  }
-  return ''
-})
-// 当前展示的列表
-const currentList = computed(() => {
-  const data = tabData.value[activeDateIdx.value]
-  if (data.buttons && data.buttons.length > 0) {
-    return data.list.filter((item) => item.key === currentBtnKey.value)
-  } else {
-    return data.list
-  }
-})
-
-function selectDate(idx: number) {
-  activeDateIdx.value = idx
-  activeBtnIdx.value = 0
-  expandedIdx.value = -1
-}
-function selectBtn(idx: number) {
-  activeBtnIdx.value = idx
-  expandedIdx.value = -1
-}
-function toggleExpand(idx: number) {
-  expandedIdx.value = expandedIdx.value === idx ? -1 : idx
-}
-
-defineExpose({
-  dateTabs,
-  activeDateIdx,
-  tabData,
-  activeBtnIdx,
-  expandedIdx,
-  selectDate,
-  selectBtn,
-  toggleExpand,
-})
 </script>
 
 <style scoped lang="scss">
@@ -225,159 +44,91 @@ defineExpose({
   display: flex;
   min-height: calc(100vh - $base-header-height);
   flex-direction: column;
+
   .fontClass {
     font-size: 30px;
     color: #fff;
+    text-align: center;
+    font-weight: bold;
   }
+
   .content_box {
     flex: 1;
     height: 100%;
     width: 100%;
     background-color: #fff;
+
     .content_div {
       height: 100%;
       width: 1200px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      padding-top: 30px;
-      .date-tabs {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px 32px;
-        margin-bottom: 24px;
-        justify-content: center;
-        .date-tab {
-          min-width: 120px;
-          padding: 8px 24px;
-          font-size: 18px;
-          color: #333;
-          border-radius: 6px 6px 0 0;
-          cursor: pointer;
-          border-bottom: 2px solid transparent;
-          transition: all 0.2s;
-          &.active {
-            border-bottom: 2px solid #1a4fa0;
-            font-weight: bold;
-          }
+      padding: 40px 20px;
+
+      .conference-info {
+        max-width: 1000px;
+        margin: 0 auto;
+
+        .conference-title {
+          font-size: 28px;
+          color: #021a5b;
+          text-align: center;
+          margin-bottom: 40px;
+          font-weight: bold;
+          line-height: 1.4;
         }
-      }
-      .tab-btns {
-        display: flex;
-        gap: 16px;
-        margin-bottom: 24px;
-        justify-content: center;
-        .tab-btn {
-          padding: 0 32px;
-          font-size: 16px;
-          color: #333;
-          background: #e6eaf3;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background 0.2s, color 0.2s;
-          height: 40px;
-          line-height: 40px;
-          display: flex;
-          align-items: center;
-          &.active {
-            background: #021a5b;
-            color: #fff;
+
+        .conference-content {
+          p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 24px;
+            text-align: justify;
+            text-indent: 2em;
+          }
+
+          .conference-intro {
+            font-size: 17px;
+            color: #021a5b;
+            font-weight: 500;
+          }
+
+          .conference-focus {
+            background: #f5f7fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #021a5b;
+            margin: 30px 0;
+          }
+
+          .conference-significance {
+            background: #e5ecfb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+          }
+
+          .conference-invitation {
+            font-size: 18px;
+            color: #021a5b;
             font-weight: bold;
-          }
-        }
-      }
-      .list-box {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        .list-row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          background: #e5ecfb;
-          border-radius: 8px;
-          height: 68px;
-          min-height: 68px;
-          max-height: 68px;
-          padding: 0 24px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-          position: relative;
-          cursor: default;
-          &.clickable {
-            cursor: pointer;
-            &:hover {
-              background: #d3e0fa;
-            }
-          }
-          .row-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            .row-time {
-              font-size: 16px;
-              color: #33459f;
-              font-weight: bold;
-            }
-            .row-text {
-              font-size: 16px;
-              color: #33459f;
-            }
-          }
-          .row-right {
-            display: flex;
-            align-items: center;
-            .row-place {
-              color: #33459f;
-              font-size: 15px;
-            }
-            .expand-btn {
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              margin-left: 8px;
-              .el-icon {
-                color: #021a5b;
-                font-weight: bold;
-                font-size: 20px;
-                transition: transform 0.2s;
-              }
-              svg {
-                stroke: #021a5b;
-                stroke-width: 2.5;
-              }
-            }
+            text-align: center;
+            background: linear-gradient(135deg, #e5ecfb 0%, #f5f7fa 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #021a5b;
+            margin-top: 40px;
           }
         }
       }
     }
+
     .blank {
       width: 100%;
       height: 60px;
     }
-  }
-}
-// 展开动画
-.expand-enter-active,
-.expand-leave-active {
-  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
-  overflow: hidden;
-}
-.expand-enter-from,
-.expand-leave-to {
-  max-height: 0;
-  opacity: 0;
-}
-.expand-enter-to,
-.expand-leave-from {
-  max-height: 300px;
-  opacity: 1;
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 </style>

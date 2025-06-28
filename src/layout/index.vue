@@ -3,7 +3,11 @@
     <!-- 顶部导航 -->
     <div class="layout_tabber">
       <div class="logo mr8">
-        <img src="@/assets/images/cecc-logo-2022-2.png" alt="logo" />
+        <img
+          @click="toMain"
+          src="@/assets/images/cecc-logo-2022-2.png"
+          alt="logo"
+        />
       </div>
       <nav class="top-navigation">
         <a
@@ -75,12 +79,12 @@ watch(
 )
 
 const menuItems = reactive([
-  { name: 'home', title: '大会日程', isSelect: false },
-  { name: 'steering', title: '指导委员会', isSelect: false },
-  { name: 'executive', title: '执行委员会', isSelect: false },
+  { name: 'home', title: '首页', isSelect: false },
+  // { name: 'steering', title: '指导委员会', isSelect: false },
+  // { name: 'executive', title: '执行委员会', isSelect: false },
+  { name: 'meetingSchedule', title: '会议日程', isSelect: false },
   { name: 'guide', title: '参会指南', isSelect: false },
-  { name: 'partners', title: '合作单位', isSelect: false },
-  { name: 'media', title: '大会报道', isSelect: false },
+  // { name: 'media', title: '大会报道', isSelect: false },
   {
     name: 'past',
     title: '往期回顾',
@@ -116,6 +120,9 @@ const handleMenuClick = (item: any) => {
     isShow.value = !isShow.value
   }
 }
+const toMain = () => {
+  router.push({ name: 'home' })
+}
 </script>
 
 <style scoped lang="scss">
@@ -136,6 +143,7 @@ const handleMenuClick = (item: any) => {
     padding: 0 50px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     .logo img {
+      cursor: pointer;
       height: 56px;
     }
     .top-navigation a {

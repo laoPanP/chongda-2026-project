@@ -10,12 +10,12 @@ import 'nprogress/nprogress.css'
 // 获取用户仓库token
 import pinia from '@/store'
 import useUserStore from '@/store/modules/user'
-import { whiteList } from '@/router/route.ts'
+// import { whiteList } from '@/router/route.ts'
 // 引入清除动态路由的方法
 import { hasPermission } from '@/utils/clearRoute/clearRoute'
 // 取消顶部进度条左侧加载
 nprogress.configure({
-  showSpinner: false
+  showSpinner: false,
 })
 
 //全局前置守卫
@@ -32,13 +32,15 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   const token = userStore.token
 
   // 1. 白名单直接放行
-  if (whiteList.includes(to.path)) {
-    return next()
-  }
+  // if (whiteList.includes(to.path)) {
+  //   return next()
+  // }
 
   // 2. 未登录处理
   if (!token) {
-    return to.path === '/login' ? next() : next(`/login?redirect=${encodeURIComponent(to.fullPath)}`)
+    return to.path === '/login'
+      ? next()
+      : next(`/login?redirect=${encodeURIComponent(to.fullPath)}`)
   }
 
   // 3. 已登录状态处理
@@ -56,7 +58,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
           await ElMessageBox.confirm('您没有访问该页面的权限', '温馨提示', {
             confirmButtonText: '返回首页',
             showCancelButton: false, // 隐藏取消按钮
-            type: 'warning'
+            type: 'warning',
           })
           return next('/') // 强制跳转
         }
@@ -74,7 +76,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
         await ElMessageBox.confirm('您没有访问该页面的权限', '温馨提示', {
           confirmButtonText: '返回首页',
           showCancelButton: false, // 隐藏取消按钮
-          type: 'warning'
+          type: 'warning',
         })
         return next('/') // 强制跳转
       }
@@ -96,7 +98,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
       localStorage.removeItem('userInfo')
       next({
         path: '/login',
-        query: { redirect: to.path }
+        query: { redirect: to.path },
       })
     }
   }
