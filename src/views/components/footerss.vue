@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <span>Copyright © 麦思博（北京）软件技术有限公司</span>
+    <span></span>
   </div>
 </template>
 

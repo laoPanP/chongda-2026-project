@@ -2,13 +2,13 @@
   <div class="layout_container">
     <!-- 顶部导航 -->
     <div class="layout_tabber">
-      <div class="logo mr8">
+      <!-- <div class="logo mr8">
         <img
           @click="toMain"
           src="@/assets/images/cecc-logo-2022-2.png"
           alt="logo"
         />
-      </div>
+      </div> -->
       <nav class="top-navigation">
         <a
           href="#"
