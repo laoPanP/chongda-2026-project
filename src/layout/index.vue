@@ -120,9 +120,9 @@ const handleMenuClick = (item: any) => {
     isShow.value = !isShow.value
   }
 }
-const toMain = () => {
-  router.push({ name: 'home' })
-}
+// const toMain = () => {
+//   router.push({ name: 'home' })
+// }
 </script>
 
 <style scoped lang="scss">
@@ -140,7 +140,7 @@ const toMain = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 50px;
+    // padding: 0 50px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     .logo img {
       cursor: pointer;
