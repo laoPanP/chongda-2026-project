@@ -21,16 +21,17 @@ export default defineConfig(({ mode }) => {
       VueSetupExtend(),
       createSvgIconsPlugin({
         iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')], //矢量图转换vue
-        symbolId: 'icon-[dir]-[name]'
+        symbolId: 'icon-[dir]-[name]',
       }),
       viteMockServe({
         // 新配置项：是否启用 mock localEnabled 和 prodEnabled 等旧配置项已被废弃
         enable: process.env.NODE_ENV === 'development', // 仅在开发环境启用
         // 其他配置
         mockPath: './mock', // Mock 文件存放目录
-        logger: true // 是否显示请求日志
-      })
+        logger: true, // 是否显示请求日志
+      }),
     ],
+    // base: '/vue3-static-publish/',
     build: {
       //vite打包优化 手动分包，把对应库放到对应包里面
       rollupOptions: {
@@ -42,10 +43,10 @@ export default defineConfig(({ mode }) => {
             lodash: ['lodash'],
             element: ['element-plus'],
             moment: ['moment'],
-            nprogress: ['nprogress']
-          } as Record<string, string[]>
-        }
-      }
+            nprogress: ['nprogress'],
+          } as Record<string, string[]>,
+        },
+      },
     },
     test: {
       // 启用类似 Jest 的全局 API
@@ -56,29 +57,29 @@ export default defineConfig(({ mode }) => {
       typecheck: {
         // ✅ 修正为对象格式
         enabled: true,
-        checker: 'tsc'
+        checker: 'tsc',
       },
       // 测试覆盖率
       coverage: {
         provider: 'v8', // 或 'istanbul'
-        reporter: ['text', 'json', 'html']
-      }
+        reporter: ['text', 'json', 'html'],
+      },
     },
     resolve: {
       alias: {
         // '@': path.resolve(__dirname, './src') //基于 文件所在目录（__dirname）解析路径，静态固定，不依赖运行时环境
         // '@': path.resolve('./src')//基于 当前工作目录（process.cwd()）解析路径，动态依赖运行时环境。
-        '@': fileURLToPath(new URL('./src', import.meta.url)) // 现代项目更推荐 ESM如果项目使用 ESM 模块（"type": "module")，该方法最优 完全兼容 ESM 和 CJS，路径解析与运行时环境无关
-      }
+        '@': fileURLToPath(new URL('./src', import.meta.url)), // 现代项目更推荐 ESM如果项目使用 ESM 模块（"type": "module")，该方法最优 完全兼容 ESM 和 CJS，路径解析与运行时环境无关
+      },
     },
     // scss全局变量配置
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "@/styles/variable.scss" as *;`
-        }
-      }
-    }
+          additionalData: `@use "@/styles/variable.scss" as *;`,
+        },
+      },
+    },
     // 配置代理——无接口地址，暂用mock模拟数据
     // server: {
     //   proxy: {
