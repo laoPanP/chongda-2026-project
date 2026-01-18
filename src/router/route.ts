@@ -9,33 +9,49 @@ export const constantRoute = [
       {
         path: '/home',
         component: () => import('@/views/home/index.vue'),
-        name: 'home', // 'home' 对应 '大会日程'
+        name: 'home',
         meta: {
-          title: '大会日程',
+          title: '首页',
         },
       },
       {
-        path: '/steering',
-        component: () => import('@/views/pages/steering.vue'),
-        name: 'steering',
+        path: '/plan101',
+        component: () => import('@/views/pages/plan101.vue'),
+        name: 'plan101',
         meta: {
-          title: '指导委员会',
+          title: '101计划',
         },
       },
       {
-        path: '/executive',
-        component: () => import('@/views/pages/executive.vue'),
-        name: 'executive',
+        path: '/virtualClassroom',
+        component: () => import('@/views/pages/virtualClassroom.vue'),
+        name: 'virtualClassroom',
         meta: {
-          title: '执行委员会',
+          title: '虚拟教研室',
         },
       },
       {
-        path: '/guide',
-        component: () => import('@/views/pages/guide.vue'),
-        name: 'guide',
+        path: '/subjectCompetition',
+        component: () => import('@/views/pages/subjectCompetition.vue'),
+        name: 'subjectCompetition',
         meta: {
-          title: '参会指南',
+          title: '学科竞赛',
+        },
+      },
+      {
+        path: '/teachingSeminar',
+        component: () => import('@/views/pages/teachingSeminar.vue'),
+        name: 'teachingSeminar',
+        meta: {
+          title: '教学研讨会',
+        },
+      },
+      {
+        path: '/openSource',
+        component: () => import('@/views/pages/openSource.vue'),
+        name: 'openSource',
+        meta: {
+          title: '开源资源',
         },
       },
       {
@@ -43,23 +59,7 @@ export const constantRoute = [
         component: () => import('@/views/pages/partners.vue'),
         name: 'partners',
         meta: {
-          title: '合作单位',
-        },
-      },
-      {
-        path: '/media',
-        component: () => import('@/views/pages/media.vue'),
-        name: 'media',
-        meta: {
-          title: '大会报道',
-        },
-      },
-      {
-        path: '/meetingSchedule',
-        component: () => import('@/views/pages/meetingSchedule.vue'),
-        name: 'meetingSchedule',
-        meta: {
-          title: '会议日程',
+          title: '合作伙伴',
         },
       },
     ],

@@ -22,7 +22,7 @@
             ><CaretBottom
           /></el-icon>
           <!-- 下拉展示内容 -->
-          <div
+          <!-- <div
             class="selectInfo"
             v-if="activeMenu == item.name && item.isSelect && isShow"
           >
@@ -33,7 +33,7 @@
             >
               {{ item1.name }}
             </div>
-          </div>
+          </div> -->
         </a>
       </nav>
     </div>
@@ -80,44 +80,45 @@ watch(
 
 const menuItems = reactive([
   { name: 'home', title: '首页', isSelect: false },
-  // { name: 'steering', title: '指导委员会', isSelect: false },
-  // { name: 'executive', title: '执行委员会', isSelect: false },
-  { name: 'meetingSchedule', title: '会议日程', isSelect: false },
-  { name: 'guide', title: '参会指南', isSelect: false },
-  // { name: 'media', title: '大会报道', isSelect: false },
-  {
-    name: 'past',
-    title: '往期回顾',
-    isSelect: true,
-    children: [
-      {
-        name: '2025',
-        toUrl: '',
-      },
-      {
-        name: '2024',
-        toUrl: '',
-      },
-      {
-        name: '2023',
-        toUrl: '',
-      },
-      {
-        name: '2022',
-        toUrl: '',
-      },
-    ],
-  },
+  { name: 'plan101', title: '101计划', isSelect: false },
+  { name: 'virtualClassroom', title: '虚拟教研室', isSelect: false },
+  { name: 'subjectCompetition', title: '学科竞赛', isSelect: false },
+  { name: 'teachingSeminar', title: '教学研讨会', isSelect: false },
+  { name: 'openSource', title: '开源资源', isSelect: false },
+  { name: 'partners', title: '合作伙伴', isSelect: false },
+  // {
+  //   name: 'past',
+  //   title: '往期回顾',
+  //   isSelect: true,
+  //   children: [
+  //     {
+  //       name: '2025',
+  //       toUrl: '',
+  //     },
+  //     {
+  //       name: '2024',
+  //       toUrl: '',
+  //     },
+  //     {
+  //       name: '2023',
+  //       toUrl: '',
+  //     },
+  //     {
+  //       name: '2022',
+  //       toUrl: '',
+  //     },
+  //   ],
+  // },
 ])
 let isShow = ref(false)
 
 const handleMenuClick = (item: any) => {
   activeMenu.value = item.name
-  if (item.name != 'past') {
+  if (item.isSelect) {
+    isShow.value = !isShow.value
+  } else {
     isShow.value = false
     router.push({ name: item.name })
-  } else {
-    isShow.value = !isShow.value
   }
 }
 // const toMain = () => {
@@ -154,7 +155,9 @@ const handleMenuClick = (item: any) => {
       font-size: 16px;
       font-weight: bold;
       padding-bottom: 16px;
-      transition: color 0.3s, border-bottom-color 0.3s;
+      transition:
+        color 0.3s,
+        border-bottom-color 0.3s;
       border-bottom: 3px solid transparent;
 
       &.active,
