@@ -31,7 +31,7 @@ export default defineConfig(({ mode }) => {
         logger: true, // 是否显示请求日志
       }),
     ],
-    // base: '/chongda-2026-project/',
+    base: '/chongda-2026-project/',
     build: {
       //vite打包优化 手动分包，把对应库放到对应包里面
       rollupOptions: {
